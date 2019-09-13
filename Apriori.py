@@ -15,6 +15,6 @@ def main():
     dataset = preprocess()
     print(len(dataset[4]),len(dataset))
     # print(dataset)
-
+    print('hello')
 if __name__ == "__main__":
     main()

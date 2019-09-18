@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
+from sklearn.manifold import TSNE
+################################################
+#Preprocess the data, read all data in the list
 
 def preprocess(string): # Three choices pca_a.txt, pca_b.txt, pca_c.txt
     with open(string,'r')as f:
@@ -14,8 +16,11 @@ def preprocess(string): # Three choices pca_a.txt, pca_b.txt, pca_c.txt
         return data_list
 
 
+##################################################
 #Calculate the covariance, eigen vector and eigen value of the data and perform the
 #matrix multiplication on the raw data by eigen vector
+
+
 
 def transform_data(data,rank):
     data = np.array(data)
@@ -32,7 +37,10 @@ def transform_data(data,rank):
     final_data = np.dot(eg_vector[rank].reshape(1, len(eg_vector[rank])), adjusted_data.T)
     return label, final_data.flatten()
 
-def classify_and_plot(label, x_axis,y_axis,num):
+#######################################################
+#classify the data and plot them in a 2D graph
+
+def classify_and_plot(label, x_axis,y_axis):
     category1 = pd.Categorical(label).categories
     cat_mapping = {}
     index1 = 0
@@ -41,7 +49,6 @@ def classify_and_plot(label, x_axis,y_axis,num):
         index1 += 1
 
     new = pd.Series(label).map(cat_mapping)
-
     data_group = [[] for i in range(len(category1))]
 
     for i in range(len(category1)):
@@ -53,7 +60,6 @@ def classify_and_plot(label, x_axis,y_axis,num):
 
     color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
     index3 = 0
-    plt.subplot(1,3,num)
     for i in data_group:
         group_x = []
         group_y = []
@@ -61,11 +67,24 @@ def classify_and_plot(label, x_axis,y_axis,num):
             group_y.append(y_axis[j])
             group_x.append(x_axis[j])
         plt.scatter(group_x, group_y, c=color[index3], marker='.')
+
+
         index3 += 1
+    plt.legend(labels=category1, loc='upper right')
+    plt.show()
 
 
 def svd_plot(data):
-    u, s, vt = np.linalg.svd(data)
+    data = np.array(data)
+    label = data[:,-1]
+    num_data = data[:,:-1]
+    num_data = np.array(num_data).astype(np.float)
+    u, s, vt = np.linalg.svd(num_data.T)
+    pivot_vector = u[:,:2]
+    svd_plot = np.dot(pivot_vector.reshape(2,len(pivot_vector)),num_data.T)
+
+    return label ,svd_plot
+
 
 
 def main():
@@ -81,33 +100,22 @@ def main():
     label3, transformed_data3_rank_1 = transform_data(dataset3,0)
     label3, transformed_data3_rank_2 = transform_data(dataset3,1)
 
-    classify_and_plot(label1, transformed_data1_rank_2, transformed_data1_rank_1,1)
-    classify_and_plot(label2, transformed_data2_rank_2, transformed_data2_rank_1,2)
-    classify_and_plot(label3, transformed_data3_rank_2, transformed_data3_rank_1,3)
-    plt.show()
+    classify_and_plot(label1, transformed_data1_rank_2, transformed_data1_rank_1)
+    classify_and_plot(label2, transformed_data2_rank_2, transformed_data2_rank_1)
+    classify_and_plot(label3, transformed_data3_rank_2, transformed_data3_rank_1)
 
 
 
-    # data_directory = str('../' + sys.argv[1])
-    # data_path = os.listdir(data_directory)
-    # img_path = []
-    # for imgname in data_path:
-    #
-    #     img_path.append(imgname)
-    # img_path.sort()
-    # print(img_path)
+    lab_svd1, svd_coor1 = svd_plot(dataset1)
+    lab_svd2, svd_coor2 = svd_plot(dataset2)
+    lab_svd3, svd_coor3 = svd_plot(dataset3)
+
+    classify_and_plot(lab_svd1, svd_coor1[0], svd_coor1[1])
+    classify_and_plot(lab_svd2, svd_coor2[0], svd_coor2[1])
+    classify_and_plot(lab_svd3, svd_coor3[0], svd_coor3[1])
+
 
 
 if __name__ == "__main__":
     main()
-#
-# fig = plt.figure(figsize=[12,6])
-# plt.subplot(1, 2, 1)
-# plt.plot(range(pmax),mses5_train)
-# plt.title('MSE for Train Data')
-# plt.legend(('No Regularization','Regularization'))
-# plt.subplot(1, 2, 2)
-# plt.plot(range(pmax),mses5)
-# plt.title('MSE for Test Data')
-# plt.legend(('No Regularization','Regularization'))
-# plt.show()
+

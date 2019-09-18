@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.manifold import TSNE
+from sklearn import manifold
 ################################################
 #Preprocess the data, read all data in the list
 
@@ -40,7 +40,7 @@ def transform_data(data,rank):
 #######################################################
 #classify the data and plot them in a 2D graph
 
-def classify_and_plot(label, x_axis,y_axis):
+def classify_and_plot(label, x_axis,y_axis,name):
     category1 = pd.Categorical(label).categories
     cat_mapping = {}
     index1 = 0
@@ -71,9 +71,13 @@ def classify_and_plot(label, x_axis,y_axis):
 
         index3 += 1
     plt.legend(labels=category1, loc='upper right')
+    plt.title(name)
+    # plt.savefig(name+'.pdf')
     plt.show()
 
 
+##############################################
+#svd decomposition, return the first two major column component and the label
 def svd_plot(data):
     data = np.array(data)
     label = data[:,-1]
@@ -85,7 +89,19 @@ def svd_plot(data):
 
     return label ,svd_plot
 
+################################################
+#t-SNE dimention reduction
+def tsne(data):
+    data = np.array(data)
+    label = data[:, -1]
+    num_data = data[:, :-1]
+    num_data = np.array(num_data).astype(np.float)
 
+    pca_tsne = manifold.TSNE(n_components=2,init = 'pca')
+    pca_tsne.fit_transform(num_data)
+    newMat = pca_tsne.embedding_.T
+
+    return label, newMat
 
 def main():
     dataset1 = preprocess('pca_a.txt')
@@ -100,19 +116,26 @@ def main():
     label3, transformed_data3_rank_1 = transform_data(dataset3,0)
     label3, transformed_data3_rank_2 = transform_data(dataset3,1)
 
-    classify_and_plot(label1, transformed_data1_rank_2, transformed_data1_rank_1)
-    classify_and_plot(label2, transformed_data2_rank_2, transformed_data2_rank_1)
-    classify_and_plot(label3, transformed_data3_rank_2, transformed_data3_rank_1)
-
-
+    classify_and_plot(label1, transformed_data1_rank_2, transformed_data1_rank_1,'PCA_a')
+    classify_and_plot(label2, transformed_data2_rank_2, transformed_data2_rank_1,'PCA_b')
+    classify_and_plot(label3, transformed_data3_rank_2, transformed_data3_rank_1,'PCA_c')
 
     lab_svd1, svd_coor1 = svd_plot(dataset1)
     lab_svd2, svd_coor2 = svd_plot(dataset2)
     lab_svd3, svd_coor3 = svd_plot(dataset3)
 
-    classify_and_plot(lab_svd1, svd_coor1[0], svd_coor1[1])
-    classify_and_plot(lab_svd2, svd_coor2[0], svd_coor2[1])
-    classify_and_plot(lab_svd3, svd_coor3[0], svd_coor3[1])
+    classify_and_plot(lab_svd1, svd_coor1[0], svd_coor1[1],'svd_a')
+    classify_and_plot(lab_svd2, svd_coor2[0], svd_coor2[1],'svd_b')
+    classify_and_plot(lab_svd3, svd_coor3[0], svd_coor3[1],'svd_c')
+
+    lab_tsne1, tsne_coor1 = tsne(dataset1)
+    lab_tsne2, tsne_coor2 = tsne(dataset2)
+    lab_tsne3, tsne_coor3 = tsne(dataset3)
+
+    classify_and_plot(lab_tsne1, tsne_coor1[0], tsne_coor1[1],'tsne_a')
+    classify_and_plot(lab_tsne2, tsne_coor2[0], tsne_coor2[1],'tsne_b')
+    classify_and_plot(lab_tsne3, tsne_coor3[0], tsne_coor3[1],'tsne_c')
+
 
 
 

@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import re
+
 
 def preprocess(string): # Three choices pca_a.txt, pca_b.txt, pca_c.txt
     with open(string,'r')as f:

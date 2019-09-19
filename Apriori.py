@@ -18,10 +18,7 @@ def set_generation(itemset, length, int):
     list1 = []
     for i in combinations(itemset, int):
         if len(list(set(i[0]+i[1]))) == length:
-            a = list(set(i[0] + i[1]))
-            # list1.append(list(set(i[0]+i[1])))
-            list1.append(a)
-
+            list1.append(list(set(i[0]+i[1])))
     return list1
 
 def main():
@@ -52,9 +49,11 @@ def main():
 
     for length in range(2,len(Dat.columns)):
         lis = set_generation(next_level,length,2)
-        print(lis)
+        lis_new = []
+        [lis_new.append(i) for i in lis if not i in lis_new]
+        print(lis_new)
         next_level = []
-        for i in lis:
+        for i in lis_new:
             counter = 0
             for j in data_list:
                 if set(i).issubset(j):

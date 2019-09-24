@@ -22,6 +22,7 @@ def set_generation(itemset, length, int):
     return list1
 
 def main():
+
     Data = preprocess()
     Dat = pd.DataFrame(Data)
 
@@ -74,7 +75,6 @@ def main():
     #     lis = set_generation(single_candidate, comb)
     #     for pair in lis:
     #
-
 
 if __name__ == "__main__":
     main()

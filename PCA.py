@@ -1,49 +1,46 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import re
+from sklearn import manifold
+################################################
+#Preprocess the data, read all data in the list
 
 def preprocess(string): # Three choices pca_a.txt, pca_b.txt, pca_c.txt
     with open(string,'r')as f:
         data = f.readlines()
         data_list = []
         for line in data:
-            pca = line.split()
+            line = line.strip('\n')
+            pca = line.split(sep="\t")
             data_list.append(pca)
         return data_list
 
-def substractmean(list):
-    avg = []
-    length = len(list[0])
-    nplist = np.array(list).astype(np.float)
-    for i in nplist:
-        avg.append(np.sum(i)/length)
 
-    one = np.ones(nplist.shape)  #create matrix with ones
-    ave_matrix = (np.array(avg)*one.T).T
-
-    return nplist-ave_matrix  # adjusted data with np type
-
+##################################################
 #Calculate the covariance, eigen vector and eigen value of the data and perform the
 #matrix multiplication on the raw data by eigen vector
 
+
+
 def transform_data(data,rank):
-    attribute_num = len(data[0]) - 1
-    data_in_column = []
-    for i in range(attribute_num):
-        data_in_column.append([item[i] for item in data])
-    label = [item[attribute_num] for item in data]
+    data = np.array(data)
+    label = data[:,-1]
+    num_data = data[:,:-1]
+    num_data = np.array(num_data).astype(np.float)
+    # mean substraction
+    adjusted_data = num_data - num_data.mean(0)
 
-    adjusted_data = substractmean(data_in_column)  # mean substraction
 
-    cov = np.cov(adjusted_data)
+    cov = np.cov(adjusted_data.T)
 
     eg_value, eg_vector = np.linalg.eig(cov)
-    data_in_column1 = np.array(data_in_column).astype(np.float)
-    final_data = np.dot(eg_vector[rank].reshape(1, len(eg_vector[rank])), data_in_column1)
+    final_data = np.dot(eg_vector[rank].reshape(1, len(eg_vector[rank])), adjusted_data.T)
     return label, final_data.flatten()
 
-def classify_and_plot(label, x_axis,y_axis,num):
+#######################################################
+#classify the data and plot them in a 2D graph
+
+def classify_and_plot(label, x_axis,y_axis,name):
     category1 = pd.Categorical(label).categories
     cat_mapping = {}
     index1 = 0
@@ -52,7 +49,6 @@ def classify_and_plot(label, x_axis,y_axis,num):
         index1 += 1
 
     new = pd.Series(label).map(cat_mapping)
-
     data_group = [[] for i in range(len(category1))]
 
     for i in range(len(category1)):
@@ -64,7 +60,6 @@ def classify_and_plot(label, x_axis,y_axis,num):
 
     color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
     index3 = 0
-    plt.subplot(1,3,num)
     for i in data_group:
         group_x = []
         group_y = []
@@ -72,52 +67,78 @@ def classify_and_plot(label, x_axis,y_axis,num):
             group_y.append(y_axis[j])
             group_x.append(x_axis[j])
         plt.scatter(group_x, group_y, c=color[index3], marker='.')
+
+
         index3 += 1
+    plt.legend(labels=category1, loc='upper right')
+    plt.title(name)
+    plt.savefig(name+'.pdf')
+    plt.show()
 
 
-# def svd_plot(data):
-#     eg_vector,egvalue,VT = np.linalg.svd(data)
-#
+##############################################
+#svd decomposition, return the first two major column component and the label
+def svd_plot(data):
+    data = np.array(data)
+    label = data[:,-1]
+    num_data = data[:,:-1]
+    num_data = np.array(num_data).astype(np.float)
+    u, s, vt = np.linalg.svd(num_data.T)
+    pivot_vector = u[:,:2]
+    svd_plot = np.dot(pivot_vector.reshape(2,len(pivot_vector)),num_data.T)
+
+    return label ,svd_plot
+
+################################################
+#t-SNE dimention reduction
+def tsne(data):
+    data = np.array(data)
+    label = data[:, -1]
+    num_data = data[:, :-1]
+    num_data = np.array(num_data).astype(np.float)
+
+    pca_tsne = manifold.TSNE(n_components=2,init = 'pca')
+    pca_tsne.fit_transform(num_data)
+    newMat = pca_tsne.embedding_.T
+
+    return label, newMat
 
 def main():
     dataset1 = preprocess('pca_a.txt')
     dataset2 = preprocess('pca_b.txt')
     dataset3 = preprocess('pca_c.txt')
 
+
     label1, transformed_data1_rank_1 = transform_data(dataset1,0)
     label1, transformed_data1_rank_2 = transform_data(dataset1,1)
     label2, transformed_data2_rank_1 = transform_data(dataset2,0)
     label2, transformed_data2_rank_2 = transform_data(dataset2,1)
-    label3, transformed_data3_rank_1 = transform_data(dataset3,1)
-    label3, transformed_data3_rank_2 = transform_data(dataset3,0)
+    label3, transformed_data3_rank_1 = transform_data(dataset3,0)
+    label3, transformed_data3_rank_2 = transform_data(dataset3,1)
 
-    classify_and_plot(label1, transformed_data1_rank_2, transformed_data1_rank_1,1)
-    classify_and_plot(label2, transformed_data2_rank_2, transformed_data2_rank_1,2)
-    classify_and_plot(label3, transformed_data3_rank_2, transformed_data3_rank_1,3)
-    plt.show()
+    classify_and_plot(label1, transformed_data1_rank_2, transformed_data1_rank_1,'PCA_a')
+    classify_and_plot(label2, transformed_data2_rank_2, transformed_data2_rank_1,'PCA_b')
+    classify_and_plot(label3, transformed_data3_rank_2, transformed_data3_rank_1,'PCA_c')
+
+    lab_svd1, svd_coor1 = svd_plot(dataset1)
+    lab_svd2, svd_coor2 = svd_plot(dataset2)
+    lab_svd3, svd_coor3 = svd_plot(dataset3)
+
+    classify_and_plot(lab_svd1, svd_coor1[0], svd_coor1[1],'svd_a')
+    classify_and_plot(lab_svd2, svd_coor2[0], svd_coor2[1],'svd_b')
+    classify_and_plot(lab_svd3, svd_coor3[0], svd_coor3[1],'svd_c')
+
+    lab_tsne1, tsne_coor1 = tsne(dataset1)
+    lab_tsne2, tsne_coor2 = tsne(dataset2)
+    lab_tsne3, tsne_coor3 = tsne(dataset3)
+
+    classify_and_plot(lab_tsne1, tsne_coor1[0], tsne_coor1[1],'tsne_a')
+    classify_and_plot(lab_tsne2, tsne_coor2[0], tsne_coor2[1],'tsne_b')
+    classify_and_plot(lab_tsne3, tsne_coor3[0], tsne_coor3[1],'tsne_c')
 
 
-
-    # data_directory = str('../' + sys.argv[1])
-    # data_path = os.listdir(data_directory)
-    # img_path = []
-    # for imgname in data_path:
-    #
-    #     img_path.append(imgname)
-    # img_path.sort()
-    # print(img_path)
 
 
 if __name__ == "__main__":
     main()
-#
-# fig = plt.figure(figsize=[12,6])
-# plt.subplot(1, 2, 1)
-# plt.plot(range(pmax),mses5_train)
-# plt.title('MSE for Train Data')
-# plt.legend(('No Regularization','Regularization'))
-# plt.subplot(1, 2, 2)
-# plt.plot(range(pmax),mses5)
-# plt.title('MSE for Test Data')
-# plt.legend(('No Regularization','Regularization'))
-# plt.show()
+

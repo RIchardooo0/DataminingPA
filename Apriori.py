@@ -1,3 +1,16 @@
+def queryOption(option):
+    template1 = "asso_rule.template1"
+    template2 = "asso_rule.template2"
+    template3 = "asso_rule.template3"
+    #option = list(option)
+    print(option)
+    if (option[:len(template1)] == template1):
+       queryTemp1(option[len(template1) + 1: -1])
+    elif(option[:len(template2)] == template2):
+        queryTemp2(option[len(template2) + 1: -1])
+    elif(option[:len(template3)] == template3):
+        queryTemp3(option[len(template3) + 1: -1])
+    return 
 def queryTemp1(template1):
     parts = eval(template1)
     if parts[0] == "RULE":

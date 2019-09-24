@@ -72,7 +72,7 @@ def classify_and_plot(label, x_axis,y_axis,name):
         index3 += 1
     plt.legend(labels=category1, loc='upper right')
     plt.title(name)
-    # plt.savefig(name+'.pdf')
+    plt.savefig(name+'.pdf')
     plt.show()
 
 

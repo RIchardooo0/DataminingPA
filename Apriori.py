@@ -3,15 +3,10 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from itertools import combinations
-import pandas as pd
-
-import numpy as np
-import matplotlib.pyplot as plt
-from itertools import combinations
 import pandas as pd
 import itertools
 import copy
+import re
 
 
 # def set_generation(itemset, length, int):
@@ -201,7 +196,7 @@ def main():
                             print(str(Set_temp)+"---->"+str([item])+"\tconf is"+str(conf))
                             counter = counter+1
                             previous.append([item])
-                            Chart.loc[len(Chart)] = pd.Series({'RULE':str(Set_temp).strip('[\'\']')+','+item,'BODY':str(Set_temp).strip('[\'\']'),'HEAD':str(item),'CONFIDENCE':conf})
+                            Chart.loc[len(Chart)] = pd.Series({'RULE':str(Set_temp).strip('[]').replace('\'','')+','+item,'BODY':str(Set_temp).strip('[]').replace('\'',''),'HEAD':str(item),'CONFIDENCE':conf})
                         #print(str(conf))
                 else:  ##如果候选项集个数超过了1
                     print("############"+str(i))
@@ -246,9 +241,9 @@ def main():
                                     counter = counter + 1
                                     i_length_set.append(list_after_sort)
                                     Chart.loc[len(Chart)] = pd.Series(
-                                        {'RULE': str(Set_temp).strip('['']') +','+ str(list_after_sort).strip('[\'\']'), 'BODY': str(Set_temp).strip('[\'\']'),
-                                         'HEAD': str(list_after_sort).strip('[\'\']'), 'CONFIDENCE': conf})
-
+                                        {'RULE': str(Set_temp).strip('[]').replace('\'', '') + ',' + str(list_after_sort).strip('[]').replace('\'', ''),
+                                         'BODY': str(Set_temp).strip('[]').replace('\'', ''), 'HEAD': str(list_after_sort).strip('[]').replace('\'', ''),
+                                         'CONFIDENCE': conf})
                     print("num_"+str(i)+"is "+str(i_length_set))
 
                     previous = i_length_set

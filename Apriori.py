@@ -55,6 +55,7 @@ def main():
          Dat[i] = 'G' +  str(i + 1) + "_" + Dat[i].astype(str)
     Data_set = Dat
     support = input("Please input the support\t")
+    confidence = input("Please input the confidence\t")
     single_candidate = set()
     ##################有个dict记录出现次数
     dict={}
@@ -81,38 +82,31 @@ def main():
     for i in range(len(Data)):
         row = list(Data_set.iloc[i])
         data_list.append(row)
-    print(data_list)
-    next_level = single_candidate
-    print(next_level)
-    print(dict)
+    # print(data_list)
+    # next_level = single_candidate
+    # print(next_level)
+    # print(dict)
 
     next_level_raw = list(itertools.combinations(single_candidate, 2))
 
-    print(next_level_raw)
+    # print(next_level_raw)
     next_level = []
     for item_son in next_level_raw:
         item_son_list = list(item_son)
         item_son_list.sort()
         count = 0
         for item_father in data_list:
-            # count2+=1
-            # print(count2)
-            # print("!!!!!")
-            # print(set(item_son))
-            #print(item_father)
             if set(item_son_list).issubset(set(item_father)):
                 count = count + 1
-        # print(count)
         if count >= int(support):
-            # print("^^^^^^^")
             next_level.append(item_son)
             dict[str(item_son_list)] = count
             all_frequentSet.append(item_son_list)
-    print(len(next_level))
-    print(next_level)
-    print(dict)
+    # print(len(next_level))
+    # print(next_level)
+    # print(dict)
 
-    print("number of length-2 frequent itemsets:"+str(len(next_level)))
+    print("number of length-2 frequent itemsets:\n"+str(len(next_level)))
 ###########################################################
 #这个是从三开始
 
@@ -121,13 +115,12 @@ def main():
         next_level_new = []
         #从小到大排序
         for i in range(len(next_level)):
-            list_temp = []
             list_temp = list(next_level[i])
             list_temp.sort()
             next_level_new.append(list_temp)
         #排序部分
-        print("after sorting")
-        print(next_level_new)
+        # print("after sorting")
+        # print(next_level_new)
         #组合过程，从开始到n-2相同的，组合
         next_level_new1 = []
 
@@ -135,23 +128,19 @@ def main():
         for x in range(len(next_level_new)):
             for y in range(x+1,len(next_level_new)):
                 L1 = next_level_new[x][:length-2]
-                #print("L1 is")
-                #print(L1)
+
                 L2 = next_level_new[y][:length-2]
-                #print("L2 is")
-                 #print(L2)
+
                 if(L1==L2):
                    list_after_sort = next_level_new[x]+next_level_new[y]
-                   #print("%%%%%%%%%")
-                   #print(list_after_sort)
-                   #print("%%%%%%%%%%%")
+
                    #########
                    list_after_sort= list(set(list_after_sort))#去重
                    #########
                    list_after_sort.sort()
                    next_level_new1.append(list(set(list_after_sort)))
-        print(next_level_new1)
-        print(len(next_level_new1))
+        # print(next_level_new1)
+        # print(len(next_level_new1))
 
         list_temp1=[]
         geshu = 0 #遍历，外层儿子里层爸爸，开始频繁项集的个数
@@ -161,9 +150,7 @@ def main():
             for item_father in data_list:
                if set(item_son).issubset(set(item_father)):
                   count = count + 1
-             # print(count)
             if count >= int(support):
-               # print("^^^^^^^")
                 dict[str(item_son)] = count
                 all_frequentSet.append(item_son)
                 list_temp1.append(item_son)
@@ -172,17 +159,17 @@ def main():
             print("No more rules")
             break
         next_level = list_temp1
-        print("number of length-"+str(length)+" frequent item sets is "+str(geshu))
+        print("number of length-"+str(length)+" frequent item sets is\n"+str(geshu))
 
-    print(len(dict))
-    print(dict)
-    print(len(all_frequentSet))
-    print(all_frequentSet)
+    # print(len(dict))
+    # print(dict)
+    # print(len(all_frequentSet))
+    # print(all_frequentSet)
 
 
         #dict是每个项集对应的出现次数
         #all_frequentSet是所有的频繁项集
-
+    Chart = pd.DataFrame(columns = ['RULE','BODY','HEAD','CONFIDENCE'])
 
     counter = 0
 
@@ -195,13 +182,9 @@ def main():
             previous = []
             for i in range(length):
                 if i==1: #如果候选项集个数等于1
-                    print("############" + str(i))
-                    one_length = []
+
                     for item in all_frequentSet[h]:
-                        #print(all_frequentSet[h])
-                        #one_length.append([item])
-                        #previous.append([item])
-                        Set_temp=[]
+
 
                         Set_temp =copy.deepcopy(all_frequentSet[h])
                         retA = [ samething for samething in all_frequentSet[h] if samething in [item]]
@@ -209,20 +192,13 @@ def main():
                             Set_temp.remove(divider)
 
                         Set_temp.sort()
-                        #divide = list(set(all_frequentSet[h])-set([item])).sort()
-                        #print("%%%%%%%%%%")
-                        #print([item])
-                        #print(all_frequentSet[h])
-                        #print(Set_temp)
-                        #print("%%%%%%%%%%")
-                 #print("&&&&&&&&"+str(dict[str(set(all_frequentSet[h]))]))
-                        #conf = dict[all_frequentSet[h]-item]/dict[all_frequentSet[h]]
+
                         conf = dict[str(all_frequentSet[h])]/dict[str(Set_temp)]
-                        #conf = dict[str(list(set(all_frequentSet[h])-set([item])))]/dict[str(all_frequentSet[h])]
-                        if conf>=0.7:
-                            print(str(Set_temp)+"---->"+str([item])+"conf is"+str(conf))
+                        if conf>=int(confidence)/100:
+                            print(str(Set_temp)+"---->"+str([item])+"\tconf is"+str(conf))
                             counter = counter+1
                             previous.append([item])
+                            Chart.loc[len(Chart)] = pd.Series({'RULS':str(all_frequentSet[h]),'BODY':str(Set_temp),'HEAD':str([item]),'CONFIDENCE':conf})
                         #print(str(conf))
                 else:  ##如果候选项集个数超过了1
                     print("############"+str(i))
@@ -262,26 +238,18 @@ def main():
                                 conf = dict[str(all_frequentSet[h])]/dict[str(Set_temp)]
                                 #print(conf)
 
-                                if conf >= 0.7:
+                                if conf >= int(confidence)/100:
                                     print(str(Set_temp) + "---->" + str(list_after_sort)+"conf is"+str(conf))
                                     counter = counter + 1
                                     i_length_set.append(list_after_sort)
+                                    Chart.loc[len(Chart)] = pd.Series({'RULS': str(all_frequentSet[h]), 'BODY': str(Set_temp), 'HEAD': str(list_after_sort),'CONFIDENCE': conf})
                     print("num_"+str(i)+"is "+str(i_length_set))
 
                     previous = i_length_set
     print(counter)
+    Chart.to_csv('Chart.csv',sep = ',')
 
 
-
-
-'''
-    next_level
-    for i in range(len(next_level_new1)):
-        list_temp = []
-        list_temp = list(next_level_new1[i])
-        list_temp.sort()
-        next_level_new.append(list_temp)
-'''
 
 
     # Data = preprocess()
@@ -328,14 +296,6 @@ def main():
     #     print('number of length-'+str(length)+'\tfrequent itemsets:\t'+ str(len(next_level)))
     #
 
-
-
-
-
-    # for comb in range(len(Data.columns)):
-    #     lis = set_generation(single_candidate, comb)
-    #     for pair in lis:
-    #
 
 if __name__ == "__main__":
     main()

@@ -201,7 +201,7 @@ def main():
                             print(str(Set_temp)+"---->"+str([item])+"\tconf is"+str(conf))
                             counter = counter+1
                             previous.append([item])
-                            Chart.loc[len(Chart)] = pd.Series({'RULS':str(all_frequentSet[h]),'BODY':str(Set_temp),'HEAD':str([item]),'CONFIDENCE':conf})
+                            Chart.loc[len(Chart)] = pd.Series({'RULE':str(Set_temp+[item]),'BODY':str(Set_temp),'HEAD':str([item]),'CONFIDENCE':conf})
                         #print(str(conf))
                 else:  ##如果候选项集个数超过了1
                     print("############"+str(i))
@@ -245,7 +245,7 @@ def main():
                                     print(str(Set_temp) + "---->" + str(list_after_sort)+"conf is"+str(conf))
                                     counter = counter + 1
                                     i_length_set.append(list_after_sort)
-                                    Chart.loc[len(Chart)] = pd.Series({'RULS': str(all_frequentSet[h]), 'BODY': str(Set_temp), 'HEAD': str(list_after_sort),'CONFIDENCE': conf})
+                                    Chart.loc[len(Chart)] = pd.Series({'RULE': str(Set_temp+list_after_sort), 'BODY': str(Set_temp), 'HEAD': str(list_after_sort),'CONFIDENCE': conf})
                     print("num_"+str(i)+"is "+str(i_length_set))
 
                     previous = i_length_set

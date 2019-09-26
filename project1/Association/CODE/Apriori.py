@@ -248,9 +248,9 @@ def main():
     support = input("Please input the support\t")
     confidence = input("Please input the confidence\t")
     single_candidate = set()
-    ##################有个dict记录出现次数
+    ##################dict recording appearance time
     dict={}
-    ##################有个list记录所有的频繁项集
+    ##################list recording all the frequent itemset
     all_frequentSet = []
 
     for i in range(len(Dat.columns)):
@@ -289,18 +289,18 @@ def main():
 
     print("number of length-2 frequent itemsets:\n"+str(len(next_level)))
 ###########################################################
-#这个是从三开始
+#begin with 3
 
 
     for length in range(3, len(Dat.columns)):
         next_level_new = []
-        #从小到大排序
+        #sorting
         for i in range(len(next_level)):
             list_temp = list(next_level[i])
             list_temp.sort()
             next_level_new.append(list_temp)
-        #排序部分
-        #组合过程，从开始到n-2相同的，组合
+        #ranking
+        #procedure of zuhe, from begin to (n-2)th same
         next_level_new1 = []
 
         list_after_sort = []
@@ -314,13 +314,13 @@ def main():
                    list_after_sort = next_level_new[x]+next_level_new[y]
 
                    #########
-                   list_after_sort= list(set(list_after_sort))#去重
+                   list_after_sort= list(set(list_after_sort))#cancel the overlapping item
                    #########
                    list_after_sort.sort()
                    next_level_new1.append(list(set(list_after_sort)))
 
         list_temp1=[]
-        geshu = 0 #遍历，外层儿子里层爸爸，开始频繁项集的个数
+        geshu = 0 #outer side is son, inner side is father
         for item_son in next_level_new1:
             item_son.sort()
             count = 0
@@ -339,20 +339,20 @@ def main():
         print("number of length-"+str(length)+" frequent item sets is\n"+str(geshu))
 
 
-        #dict是每个项集对应的出现次数
-        #all_frequentSet是所有的频繁项集
+        #dict is the appearance time of every item
+        #all_frequentSet is all of the frequent set
     Chart = pd.DataFrame(columns = ['RULE','BODY','HEAD','CONFIDENCE'])
 
     counter = 0
 
     for h in range(len(all_frequentSet)):
-        if len(all_frequentSet[h])==1: #长度为1的频繁项集不配有规则
+        if len(all_frequentSet[h])==1: #lenth-1 can't have any rules
             continue
         else:
             length = len(all_frequentSet[h])
             previous = []
             for i in range(length):
-                if i==1: #如果候选项集个数等于1
+                if i==1: # if the candidate item-length is 1
 
                     for item in all_frequentSet[h]:
 
@@ -370,7 +370,7 @@ def main():
                             counter = counter+1
                             previous.append([item])
                             Chart.loc[len(Chart)] = pd.Series({'RULE':str(Set_temp).strip('[]').replace('\'','')+','+item,'BODY':str(Set_temp).strip('[]').replace('\'',''),'HEAD':str(item),'CONFIDENCE':conf})
-                else:  ##如果候选项集个数超过了1
+                else:  ##if length of the candidate xiangji>1
                     # print("############"+str(i))
                     i_length_set = []
                     for x in range(len(previous)):
@@ -408,7 +408,7 @@ def main():
 
     Chart.to_csv('Chart.csv',sep = ',')
 
-    # asso_rule.template1("BODY", 1, ['G59_Up', 'G10_Down'])
+    #asso_rule.template1("BODY", 1, ['G59_Up', 'G10_Down'])
     #asso_rule.template2("RULE", 3)
     #asso_rule.template3("1or1","BODY","ANY",['G10_Down'],"HEAD",1,['G59_Up'])
     df = pd.read_csv("Chart.csv")

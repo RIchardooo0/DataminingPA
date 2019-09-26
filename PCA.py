@@ -104,37 +104,43 @@ def tsne(data):
     return label, newMat
 
 def main():
-    dataset1 = preprocess('pca_a.txt')
-    dataset2 = preprocess('pca_b.txt')
-    dataset3 = preprocess('pca_c.txt')
+    # dataset1 = preprocess('pca_a.txt')
+    # dataset2 = preprocess('pca_b.txt')
+    # dataset3 = preprocess('pca_c.txt')
+    dataset4 = preprocess('pca_demo.txt')
 
+    # label1, transformed_data1_rank_1 = transform_data(dataset1,0)
+    # label1, transformed_data1_rank_2 = transform_data(dataset1,1)
+    # label2, transformed_data2_rank_1 = transform_data(dataset2,0)
+    # label2, transformed_data2_rank_2 = transform_data(dataset2,1)
+    # label3, transformed_data3_rank_1 = transform_data(dataset3,0)
+    # label3, transformed_data3_rank_2 = transform_data(dataset3,1)
+    label4, transformed_data4_rank_1 = transform_data(dataset4,0)
+    label4, transformed_data4_rank_2 = transform_data(dataset4,1)
 
-    label1, transformed_data1_rank_1 = transform_data(dataset1,0)
-    label1, transformed_data1_rank_2 = transform_data(dataset1,1)
-    label2, transformed_data2_rank_1 = transform_data(dataset2,0)
-    label2, transformed_data2_rank_2 = transform_data(dataset2,1)
-    label3, transformed_data3_rank_1 = transform_data(dataset3,0)
-    label3, transformed_data3_rank_2 = transform_data(dataset3,1)
+    # classify_and_plot(label1, transformed_data1_rank_2, transformed_data1_rank_1,'PCA_a')
+    # classify_and_plot(label2, transformed_data2_rank_2, transformed_data2_rank_1,'PCA_b')
+    # classify_and_plot(label3, transformed_data3_rank_2, transformed_data3_rank_1,'PCA_c')
+    classify_and_plot(label4, transformed_data4_rank_2, transformed_data4_rank_1,'PCA_demo')
+    # lab_svd1, svd_coor1 = svd_plot(dataset1)
+    # lab_svd2, svd_coor2 = svd_plot(dataset2)
+    # lab_svd3, svd_coor3 = svd_plot(dataset3)
+    lab_svd4, svd_coor4 = svd_plot(dataset4)
 
-    classify_and_plot(label1, transformed_data1_rank_2, transformed_data1_rank_1,'PCA_a')
-    classify_and_plot(label2, transformed_data2_rank_2, transformed_data2_rank_1,'PCA_b')
-    classify_and_plot(label3, transformed_data3_rank_2, transformed_data3_rank_1,'PCA_c')
+    # classify_and_plot(lab_svd1, svd_coor1[0], svd_coor1[1],'svd_a')
+    # classify_and_plot(lab_svd2, svd_coor2[0], svd_coor2[1],'svd_b')
+    # classify_and_plot(lab_svd3, svd_coor3[0], svd_coor3[1],'svd_c')
+    classify_and_plot(lab_svd4, svd_coor4[0], svd_coor4[1],'svd_demo')
 
-    lab_svd1, svd_coor1 = svd_plot(dataset1)
-    lab_svd2, svd_coor2 = svd_plot(dataset2)
-    lab_svd3, svd_coor3 = svd_plot(dataset3)
+    # lab_tsne1, tsne_coor1 = tsne(dataset1)
+    # lab_tsne2, tsne_coor2 = tsne(dataset2)
+    # lab_tsne3, tsne_coor3 = tsne(dataset3)
+    lab_tsne4, tsne_coor4 = tsne(dataset4)
 
-    classify_and_plot(lab_svd1, svd_coor1[0], svd_coor1[1],'svd_a')
-    classify_and_plot(lab_svd2, svd_coor2[0], svd_coor2[1],'svd_b')
-    classify_and_plot(lab_svd3, svd_coor3[0], svd_coor3[1],'svd_c')
-
-    lab_tsne1, tsne_coor1 = tsne(dataset1)
-    lab_tsne2, tsne_coor2 = tsne(dataset2)
-    lab_tsne3, tsne_coor3 = tsne(dataset3)
-
-    classify_and_plot(lab_tsne1, tsne_coor1[0], tsne_coor1[1],'tsne_a')
-    classify_and_plot(lab_tsne2, tsne_coor2[0], tsne_coor2[1],'tsne_b')
-    classify_and_plot(lab_tsne3, tsne_coor3[0], tsne_coor3[1],'tsne_c')
+    # classify_and_plot(lab_tsne1, tsne_coor1[0], tsne_coor1[1],'tsne_a')
+    # classify_and_plot(lab_tsne2, tsne_coor2[0], tsne_coor2[1],'tsne_b')
+    # classify_and_plot(lab_tsne3, tsne_coor3[0], tsne_coor3[1],'tsne_c')
+    classify_and_plot(lab_tsne4, tsne_coor4[0], tsne_coor4[1],'tsne_demo')
 
 
 

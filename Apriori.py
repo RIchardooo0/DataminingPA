@@ -23,21 +23,19 @@ def queryOption(option, df):
     template3 = "asso_rule.template3"
     print(option)
     if (option[:len(template1)] == template1):
-        result, cnt ,data= queryTemp1(option[len(template1) + 1: -1], df)
+        result, cnt ,data = queryTemp1(option[len(template1) + 1: -1], df)
         li = [data[i] for i in result]
+        print(li,cnt)
 
-        print(li,len(li))
+        # print(li,len(li))
     elif (option[:len(template2)] == template2):
-        result, cnt, data = queryTemp2(option[len(template2) + 1: -1], df)
+        result, cnt,data = queryTemp2(option[len(template2) + 1: -1], df)
         li = [data[i] for i in result]
-
-        print(li,len(li))
+        print(li,cnt)
     elif (option[:len(template3)] == template3):
         result ,cnt = queryTemp3(option[len(template3) + 1: -1], df)
-        print(result)
-        print(len(result))
-        # li = [df.iloc[i,:]for i in result]
-        # print()
+        li = [df.iloc[i,:]for i in result]
+        print(li,cnt)
     return
 
 
@@ -49,17 +47,11 @@ def queryTemp1(template1, df):
             for son in parts[2]:
                 add_set = set()
                 for line in range(len(df.RULE)):
-                    print(str(line) + "\n")
-                    print(type(df.RULE[line]))
-
                     father_candidate = df.RULE[line].split(',')
-                    print("........." + str(set(father_candidate)))
-                    # print(",,,,,,,,,"+str(set(son_candidate)))
+
                     if set([son]).issubset(set(father_candidate)):
-                        print("!!!!!!!!!!!\n")
                         add_set.add(line)
                 total_set = total_set.union(add_set)
-            print(len(total_set), "rows selected")
         elif (parts[1] == "NONE"):
             total_set = set()
             for i in range(len(df.RULE)):
@@ -68,12 +60,7 @@ def queryTemp1(template1, df):
                 minus_set = set()
 
                 for line in range(len(df.RULE)):
-                    print(str(line) + "\n")
-                    print(type(df.RULE[line]))
-
                     father_candidate = df.RULE[line].split(',')
-                    print("........." + str(set(father_candidate)))
-                    # print(",,,,,,,,,"+str(set(son_candidate)))
                     if set([son]).issubset(set(father_candidate)):
                         minus_set.add(line)
                 total_set = total_set.difference(minus_set)
@@ -83,7 +70,6 @@ def queryTemp1(template1, df):
             for i in range(len(df.RULE)):
                 counter.append(0)
             for son in parts[2]:
-                # print(son)
                 for line in range(len(df.RULE)):
                     father_candidate = []
                     father_candidate = df.RULE[line].split(',')
@@ -99,13 +85,8 @@ def queryTemp1(template1, df):
             for son in parts[2]:
                 add_set = set()
                 for line in range(len(df.HEAD)):
-                    print(str(line) + "\n")
-                    print(type(df.HEAD[line]))
                     father_candidate = df.HEAD[line].split(',')
-                    print("........." + str(set(father_candidate)))
-                    # print(",,,,,,,,,"+str(set(son_candidate)))
                     if set([son]).issubset(set(father_candidate)):
-                        print("!!!!!!!!!!!\n")
                         add_set.add(line)
                 total_set = total_set.union(add_set)
         elif parts[1] == "NONE":
@@ -115,12 +96,8 @@ def queryTemp1(template1, df):
             for son in parts[2]:
                 minus_set = set()
                 for line in range(len(df.HEAD)):
-                    print(str(line) + "\n")
-                    print(type(df.HEAD[line]))
                     father_candidate = df.HEAD[line].split(',')
-                    print("........." + str(set(father_candidate)))
                     if set([son]).issubset(set(father_candidate)):
-                        print("!!!!!!!!!!!\n")
                         minus_set.add(line)
                 total_set = total_set.difference(minus_set)
         elif parts[1] == 1:
@@ -129,7 +106,6 @@ def queryTemp1(template1, df):
             for i in range(len(df.HEAD)):
                 counter.append(0)
             for son in parts[2]:
-                # print(son)
                 for line in range(len(df.HEAD)):
                     father_candidate = []
                     father_candidate = df.HEAD[line].split(',')
@@ -138,22 +114,15 @@ def queryTemp1(template1, df):
             for index in range(len(counter)):
                 if counter[index] == 1:
                     counter_set.add(index)
-            print(counter)
             total_set = counter_set
-            print(len(counter_set))
         data = df.HEAD
     elif parts[0] == "BODY":
         if parts[1] == "ANY":
             for son in parts[2]:
                 add_set = set()
                 for line in range(len(df.BODY)):
-                    print(str(line) + "\n")
-                    print(type(df.BODY[line]))
                     father_candidate = df.BODY[line].split(',')
-                    print("........." + str(set(father_candidate)))
-                    # print(",,,,,,,,,"+str(set(son_candidate)))
                     if set([son]).issubset(set(father_candidate)):
-                        print("!!!!!!!!!!!\n")
                         add_set.add(line)
             total_set = total_set.union(add_set)
         elif parts[1] == "NONE":
@@ -163,13 +132,9 @@ def queryTemp1(template1, df):
             for son in parts[2]:
                 minus_set = set()
                 for line in range(len(df.BODY)):
-                    print(str(line) + "\n")
-                    print(type(df.RULE[line]))
                     father_candidate = []
                     father_candidate = df.BODY[line].split(',')
-                    print("........." + str(set(father_candidate)))
                     if set([son]).issubset(set(father_candidate)):
-                        print("!!!!!!!!!!!\n")
                         minus_set.add(line)
             total_set = total_set.difference(minus_set)
         elif parts[1] == 1:
@@ -178,7 +143,6 @@ def queryTemp1(template1, df):
             for i in range(len(df.BODY)):
                 counter.append(0)
             for son in parts[2]:
-                # print(son)
                 for line in range(len(df.BODY)):
                     father_candidate = []
                     father_candidate = df.BODY[line].split(',')
@@ -206,7 +170,6 @@ def queryTemp2(template2, df):
             if len(father_candidate) >= parts[1]:
                 count += 1
                 total_set.add(line)
-        print(count)
         data = df.RULE
     elif parts[0] == "HEAD":
         for line in range(len(df.HEAD)):
@@ -215,7 +178,6 @@ def queryTemp2(template2, df):
             if len(father_candidate) >= parts[1]:
                 count += 1
                 total_set.add(line)
-        print(count)
         data = df.HEAD
     elif parts[0] == "BODY":
         for line in range(len(df.BODY)):
@@ -232,46 +194,47 @@ def queryTemp3(template3, df):
     parts = eval(template3)
     if parts[0] == "1or1":
         count_set = set()
-        count1_set, count1, data1 = queryTemp1(str(parts[1:4]), df)
-        count2_set, count2, data2 = queryTemp1(str(parts[4:]), df)
+        count1_set, count1,data1 = queryTemp1(str(parts[1:4]), df)
+        count2_set, count2,data2= queryTemp1(str(parts[4:]), df)
+
         count_set = count1_set.union(count2_set)
-        print(len(count_set))
+
     elif parts[0] == "1and1":
         count_set = set()
         count1_set,count1,data1 = queryTemp1(str(parts[1:4]), df)
         count2_set,count2,data2 = queryTemp1(str(parts[4:]), df)
         count_set = count1_set.intersection(count2_set)
-        print(len(count_set))
+
     elif parts[0] == "1or2":
         count_set = set()
         count1_set,count1,data1 = queryTemp1(str(parts[1:4]), df)
         count2_set,count2,data2 = queryTemp2(str(parts[4:]), df)
         count_set = count1_set.union(count2_set)
-        print(len(count_set))
+
     elif parts[0] == "1and2":
         count_set = set()
         count1_set,count1,data1 = queryTemp1(str(parts[1:4]), df)
         count2_set,count2,data2 = queryTemp2(str(parts[4:]), df)
         count_set = count1_set.intersection(count2_set)
-        print(len(count_set))
+
     elif parts[0] == "2or2":
         count_set = set()
         count1_set,count1,data1 = queryTemp2(str(parts[1:3]), df)
         count2_set,count2,data2 = queryTemp2(str(parts[3:]), df)
         count_set = count1_set.union(count2_set)
-        print(len(count_set))
+
     elif parts[0] == "2and2":
         count_set = set()
         count1_set,count1,data1 = queryTemp2(str(parts[1:3]), df)
         count2_set,count2,data2 = queryTemp2(str(parts[3:]), df)
         count_set = count1_set.intersection(count2_set)
-        print(len(count_set))
+
 
     return count_set, len(count_set)
 
 
 def main():
-    '''
+
     Data = preprocess()
     Dat = pd.DataFrame(Data)
 
@@ -300,7 +263,6 @@ def main():
                 all_frequentSet.append([count[0]])
 
 
-    #single_candidate = [[i] for i in single_candidate]
     print('number of length-1 frequent itemsets:\n'+ str(len(single_candidate)))
     data_list = []
 
@@ -384,7 +346,6 @@ def main():
     counter = 0
 
     for h in range(len(all_frequentSet)):
-        print("oooooooooooo"+str(h))
         if len(all_frequentSet[h])==1: #长度为1的频繁项集不配有规则
             continue
         else:
@@ -405,13 +366,12 @@ def main():
 
                         conf = dict[str(all_frequentSet[h])]/dict[str(Set_temp)]
                         if conf>=int(confidence)/100:
-                            print(str(Set_temp)+"---->"+str([item])+"\tconf is"+str(conf))
+                            # print(str(Set_temp)+"---->"+str([item])+"\tconf is"+str(conf))
                             counter = counter+1
                             previous.append([item])
                             Chart.loc[len(Chart)] = pd.Series({'RULE':str(Set_temp).strip('[]').replace('\'','')+','+item,'BODY':str(Set_temp).strip('[]').replace('\'',''),'HEAD':str(item),'CONFIDENCE':conf})
-                        #print(str(conf))
                 else:  ##如果候选项集个数超过了1
-                    print("############"+str(i))
+                    # print("############"+str(i))
                     i_length_set = []
                     for x in range(len(previous)):
                         for y in range(x + 1, len(previous)):
@@ -431,77 +391,35 @@ def main():
                                 for divider in retA:
                                     Set_temp.remove(divider)
                                 Set_temp.sort()
-
-                                print("retA is"+str(retA))
-
-
                                 conf = dict[str(all_frequentSet[h])]/dict[str(Set_temp)]
 
                                 if conf >= int(confidence)/100:
-                                    print(str(Set_temp) + "---->" + str(list_after_sort)+"conf is"+str(conf))
+                                    # print(str(Set_temp) + "---->" + str(list_after_sort)+"conf is"+str(conf))
                                     counter = counter + 1
                                     i_length_set.append(list_after_sort)
                                     Chart.loc[len(Chart)] = pd.Series(
                                         {'RULE': str(Set_temp).strip('[]').replace('\'', '') + ',' + str(list_after_sort).strip('[]').replace('\'', ''),
                                          'BODY': str(Set_temp).strip('[]').replace('\'', ''), 'HEAD': str(list_after_sort).strip('[]').replace('\'', ''),
                                          'CONFIDENCE': conf})
-                    print("num_"+str(i)+"is "+str(i_length_set))
+                    # print("num_"+str(i)+"is "+str(i_length_set))
 
                     previous = i_length_set
     print(counter)
-'''
-    # Chart.to_csv('Chart.csv',sep = ',')
-    rule = input("Please input the rule with the following pattern\n asso_rule.template1(\"BODY\", 1, ['G59_Up', 'G10_Down'])\n")
+
+    Chart.to_csv('Chart.csv',sep = ',')
+
     # asso_rule.template1("BODY", 1, ['G59_Up', 'G10_Down'])
     #asso_rule.template2("RULE", 3)
-    #asso_rule.template3("1or1","BODY","ANY",['G10_DOWN'],"HEAD",1,['G59_Up'])
+    #asso_rule.template3("1or1","BODY","ANY",['G10_Down'],"HEAD",1,['G59_Up'])
     df = pd.read_csv("Chart.csv")
-    # print(df.RULE)
-    queryOption(rule, df)
+    while True:
 
-    # Data = preprocess()
-    # Dat = pd.DataFrame(Data)
-    #
-    #
-    # for i in range(len(Dat.columns) - 1):
-    #     Dat[i] = 'G' + str(i + 1) + "_" + Dat[i].astype(str)
-    # Data_set = Dat
-    # support = input("Please input the support\t")
-    # single_candidate = set()
-    #
-    #
-    # for i in range(len(Dat.columns)):
-    #     dat_col = Dat[i].groupby(Dat[i]).describe()
-    #     for j in range(len(dat_col)):
-    #         count = list(dat_col.iloc[j])[2:4]
-    #         if (count[1] >= int(support)):
-    #             single_candidate.add(count[0])
-    # single_candidate = [[i] for i in single_candidate]
-    # print('number of length-1 frequent itemsets:\n'+ str(len(single_candidate)))
-    # data_list = []
-    #
-    # for i in range(len(Data)):
-    #     data_list.append(Data_set.iloc[i])
-    # next_level = single_candidate
-    #
-    # for length in range(2,len(Dat.columns)):
-    #     lis = set_generation(next_level,length,2)
-    #     lis_new = []
-    #     [lis_new.append(i) for i in lis if not i in lis_new]
-    #     print(lis_new)
-    #     next_level = []
-    #     for i in lis_new:
-    #         counter = 0
-    #         for j in data_list:
-    #             if set(i).issubset(j):
-    #                 counter+=1
-    #         if counter>=int(support):
-    #             next_level.append(i)
-    #     if len(next_level)==0:
-    #         print("No more rules")
-    #         break
-    #     print('number of length-'+str(length)+'\tfrequent itemsets:\t'+ str(len(next_level)))
-    #
+        rule = input(
+            "\nPlease input the rule with the following pattern\n asso_rule.template1(\"BODY\", 1, ['G59_Up', 'G10_Down']) to quit, Please input 0\n")
+        if rule == str(0):
+            break
+        queryOption(rule, df)
+
 
 
 

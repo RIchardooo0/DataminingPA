@@ -1,22 +1,12 @@
 
-
-
-import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import itertools
 import copy
-import re
 
 
-# def set_generation(itemset, length, int):
-#     list1 = []
-#     for i in combinations(itemset, int):
-#         if len(list(set(i[0]+i[1]))) == length:
-#             list1.append(list(set(i[0]+i[1])))
-#     return list1
 
-def preprocess(): # Three choices pca_a.txt, pca_b.txt, pca_c.txt
+
+def preprocess():
     with open('associationruletestdata.txt','r')as f:
         data = f.readlines()
         data_list = []
@@ -27,21 +17,261 @@ def preprocess(): # Three choices pca_a.txt, pca_b.txt, pca_c.txt
         return data_list
 
 
-#def sortthelist()
-"""
-def set_generation(itemset, length, int):
-    list1 = []
-    for i in combinations(itemset, int):
-        if len(list(set(i[0]+i[1]))) == length:
-            a = list(set(i[0] + i[1]))
-            # list1.append(list(set(i[0]+i[1])))
-            list1.append(a)
+def queryOption(option, df):
+    template1 = "asso_rule.template1"
+    template2 = "asso_rule.template2"
+    template3 = "asso_rule.template3"
+    print(option)
+    if (option[:len(template1)] == template1):
+        result, cnt ,data= queryTemp1(option[len(template1) + 1: -1], df)
+        li = [data[i] for i in result]
 
-    return list1
-"""
+        print(li,len(li))
+    elif (option[:len(template2)] == template2):
+        result, cnt, data = queryTemp2(option[len(template2) + 1: -1], df)
+        li = [data[i] for i in result]
+
+        print(li,len(li))
+    elif (option[:len(template3)] == template3):
+        result ,cnt = queryTemp3(option[len(template3) + 1: -1], df)
+        print(result)
+        print(len(result))
+        # li = [df.iloc[i,:]for i in result]
+        # print()
+    return
+
+
+def queryTemp1(template1, df):
+    parts = eval(template1)
+    total_set = set()
+    if parts[0] == "RULE":
+        if parts[1] == "ANY":
+            for son in parts[2]:
+                add_set = set()
+                for line in range(len(df.RULE)):
+                    print(str(line) + "\n")
+                    print(type(df.RULE[line]))
+
+                    father_candidate = df.RULE[line].split(',')
+                    print("........." + str(set(father_candidate)))
+                    # print(",,,,,,,,,"+str(set(son_candidate)))
+                    if set([son]).issubset(set(father_candidate)):
+                        print("!!!!!!!!!!!\n")
+                        add_set.add(line)
+                total_set = total_set.union(add_set)
+            print(len(total_set), "rows selected")
+        elif (parts[1] == "NONE"):
+            total_set = set()
+            for i in range(len(df.RULE)):
+                total_set.add(i)
+            for son in parts[2]:
+                minus_set = set()
+
+                for line in range(len(df.RULE)):
+                    print(str(line) + "\n")
+                    print(type(df.RULE[line]))
+
+                    father_candidate = df.RULE[line].split(',')
+                    print("........." + str(set(father_candidate)))
+                    # print(",,,,,,,,,"+str(set(son_candidate)))
+                    if set([son]).issubset(set(father_candidate)):
+                        minus_set.add(line)
+                total_set = total_set.difference(minus_set)
+        elif (parts[1] == 1):
+            counter = []
+            counter_set = set()
+            for i in range(len(df.RULE)):
+                counter.append(0)
+            for son in parts[2]:
+                # print(son)
+                for line in range(len(df.RULE)):
+                    father_candidate = []
+                    father_candidate = df.RULE[line].split(',')
+                    if set([son]).issubset(set(father_candidate)):
+                        counter[line] += 1
+            for index in range(len(counter)):
+                if counter[index] == 1:
+                    counter_set.add(index)
+            total_set = counter_set
+        data = df.RULE
+    elif parts[0] == "HEAD":
+        if parts[1] == "ANY":
+            for son in parts[2]:
+                add_set = set()
+                for line in range(len(df.HEAD)):
+                    print(str(line) + "\n")
+                    print(type(df.HEAD[line]))
+                    father_candidate = df.HEAD[line].split(',')
+                    print("........." + str(set(father_candidate)))
+                    # print(",,,,,,,,,"+str(set(son_candidate)))
+                    if set([son]).issubset(set(father_candidate)):
+                        print("!!!!!!!!!!!\n")
+                        add_set.add(line)
+                total_set = total_set.union(add_set)
+        elif parts[1] == "NONE":
+            total_set = set()
+            for i in range(len(df.HEAD)):
+                total_set.add(i)
+            for son in parts[2]:
+                minus_set = set()
+                for line in range(len(df.HEAD)):
+                    print(str(line) + "\n")
+                    print(type(df.HEAD[line]))
+                    father_candidate = df.HEAD[line].split(',')
+                    print("........." + str(set(father_candidate)))
+                    if set([son]).issubset(set(father_candidate)):
+                        print("!!!!!!!!!!!\n")
+                        minus_set.add(line)
+                total_set = total_set.difference(minus_set)
+        elif parts[1] == 1:
+            counter = []
+            counter_set = set()
+            for i in range(len(df.HEAD)):
+                counter.append(0)
+            for son in parts[2]:
+                # print(son)
+                for line in range(len(df.HEAD)):
+                    father_candidate = []
+                    father_candidate = df.HEAD[line].split(',')
+                    if set([son]).issubset(set(father_candidate)):
+                        counter[line] += 1
+            for index in range(len(counter)):
+                if counter[index] == 1:
+                    counter_set.add(index)
+            print(counter)
+            total_set = counter_set
+            print(len(counter_set))
+        data = df.HEAD
+    elif parts[0] == "BODY":
+        if parts[1] == "ANY":
+            for son in parts[2]:
+                add_set = set()
+                for line in range(len(df.BODY)):
+                    print(str(line) + "\n")
+                    print(type(df.BODY[line]))
+                    father_candidate = df.BODY[line].split(',')
+                    print("........." + str(set(father_candidate)))
+                    # print(",,,,,,,,,"+str(set(son_candidate)))
+                    if set([son]).issubset(set(father_candidate)):
+                        print("!!!!!!!!!!!\n")
+                        add_set.add(line)
+            total_set = total_set.union(add_set)
+        elif parts[1] == "NONE":
+            total_set = set()
+            for i in range(len(df.BODY)):
+                total_set.add(i)
+            for son in parts[2]:
+                minus_set = set()
+                for line in range(len(df.BODY)):
+                    print(str(line) + "\n")
+                    print(type(df.RULE[line]))
+                    father_candidate = []
+                    father_candidate = df.BODY[line].split(',')
+                    print("........." + str(set(father_candidate)))
+                    if set([son]).issubset(set(father_candidate)):
+                        print("!!!!!!!!!!!\n")
+                        minus_set.add(line)
+            total_set = total_set.difference(minus_set)
+        elif parts[1] == 1:
+            counter = []
+            counter_set = set()
+            for i in range(len(df.BODY)):
+                counter.append(0)
+            for son in parts[2]:
+                # print(son)
+                for line in range(len(df.BODY)):
+                    father_candidate = []
+                    father_candidate = df.BODY[line].split(',')
+                    if set([son]).issubset(set(father_candidate)):
+                        counter[line] += 1
+            for index in range(len(counter)):
+                if counter[index] == 1:
+                    counter_set.add(index)
+
+
+            total_set = counter_set
+        data = df.BODY
+
+    return total_set, len(total_set),data
+
+
+def queryTemp2(template2, df):
+    parts = eval(template2)
+    count = 0
+    total_set = set()
+    if parts[0] == "RULE":
+        for line in range(len(df.RULE)):
+            father_candidate = []
+            father_candidate = df.RULE[line].split(',')
+            if len(father_candidate) >= parts[1]:
+                count += 1
+                total_set.add(line)
+        print(count)
+        data = df.RULE
+    elif parts[0] == "HEAD":
+        for line in range(len(df.HEAD)):
+            father_candidate = []
+            father_candidate = df.HEAD[line].split(',')
+            if len(father_candidate) >= parts[1]:
+                count += 1
+                total_set.add(line)
+        print(count)
+        data = df.HEAD
+    elif parts[0] == "BODY":
+        for line in range(len(df.BODY)):
+            father_candidate = []
+            father_candidate = df.BODY[line].split(',')
+            if len(father_candidate) >= parts[1]:
+                count += 1
+                total_set.add(line)
+        data = df.BODY
+    return total_set,len(total_set),data
+
+
+def queryTemp3(template3, df):
+    parts = eval(template3)
+    if parts[0] == "1or1":
+        count_set = set()
+        count1_set, count1, data1 = queryTemp1(str(parts[1:4]), df)
+        count2_set, count2, data2 = queryTemp1(str(parts[4:]), df)
+        count_set = count1_set.union(count2_set)
+        print(len(count_set))
+    elif parts[0] == "1and1":
+        count_set = set()
+        count1_set,count1,data1 = queryTemp1(str(parts[1:4]), df)
+        count2_set,count2,data2 = queryTemp1(str(parts[4:]), df)
+        count_set = count1_set.intersection(count2_set)
+        print(len(count_set))
+    elif parts[0] == "1or2":
+        count_set = set()
+        count1_set,count1,data1 = queryTemp1(str(parts[1:4]), df)
+        count2_set,count2,data2 = queryTemp2(str(parts[4:]), df)
+        count_set = count1_set.union(count2_set)
+        print(len(count_set))
+    elif parts[0] == "1and2":
+        count_set = set()
+        count1_set,count1,data1 = queryTemp1(str(parts[1:4]), df)
+        count2_set,count2,data2 = queryTemp2(str(parts[4:]), df)
+        count_set = count1_set.intersection(count2_set)
+        print(len(count_set))
+    elif parts[0] == "2or2":
+        count_set = set()
+        count1_set,count1,data1 = queryTemp2(str(parts[1:3]), df)
+        count2_set,count2,data2 = queryTemp2(str(parts[3:]), df)
+        count_set = count1_set.union(count2_set)
+        print(len(count_set))
+    elif parts[0] == "2and2":
+        count_set = set()
+        count1_set,count1,data1 = queryTemp2(str(parts[1:3]), df)
+        count2_set,count2,data2 = queryTemp2(str(parts[3:]), df)
+        count_set = count1_set.intersection(count2_set)
+        print(len(count_set))
+
+    return count_set, len(count_set)
 
 
 def main():
+    '''
     Data = preprocess()
     Dat = pd.DataFrame(Data)
 
@@ -68,9 +298,6 @@ def main():
                 single_candidate.add(count[0])
                 dict[str([count[0]])]=count[1]
                 all_frequentSet.append([count[0]])
-                #print("################")
-                #print(all_frequentSet)
-
 
 
     #single_candidate = [[i] for i in single_candidate]
@@ -80,14 +307,11 @@ def main():
     for i in range(len(Data)):
         row = list(Data_set.iloc[i])
         data_list.append(row)
-    # print(data_list)
-    # next_level = single_candidate
-    # print(next_level)
-    # print(dict)
+
 
     next_level_raw = list(itertools.combinations(single_candidate, 2))
 
-    # print(next_level_raw)
+
     next_level = []
     for item_son in next_level_raw:
         item_son_list = list(item_son)
@@ -100,9 +324,6 @@ def main():
             next_level.append(item_son)
             dict[str(item_son_list)] = count
             all_frequentSet.append(item_son_list)
-    # print(len(next_level))
-    # print(next_level)
-    # print(dict)
 
     print("number of length-2 frequent itemsets:\n"+str(len(next_level)))
 ###########################################################
@@ -117,8 +338,6 @@ def main():
             list_temp.sort()
             next_level_new.append(list_temp)
         #排序部分
-        # print("after sorting")
-        # print(next_level_new)
         #组合过程，从开始到n-2相同的，组合
         next_level_new1 = []
 
@@ -137,8 +356,6 @@ def main():
                    #########
                    list_after_sort.sort()
                    next_level_new1.append(list(set(list_after_sort)))
-        # print(next_level_new1)
-        # print(len(next_level_new1))
 
         list_temp1=[]
         geshu = 0 #遍历，外层儿子里层爸爸，开始频繁项集的个数
@@ -158,11 +375,6 @@ def main():
             break
         next_level = list_temp1
         print("number of length-"+str(length)+" frequent item sets is\n"+str(geshu))
-
-    # print(len(dict))
-    # print(dict)
-    # print(len(all_frequentSet))
-    # print(all_frequentSet)
 
 
         #dict是每个项集对应的出现次数
@@ -204,12 +416,7 @@ def main():
                     for x in range(len(previous)):
                         for y in range(x + 1, len(previous)):
                             L1 = previous[x][:i - 2]
-                            #print("L1 is")
-                            #print(L1)
-
                             L2 = previous[y][:i - 2]
-                            #print("L2 is")
-                            #print(L2)
                             if L1 == L2:
                                 #print("previous X is" + str(previous[x]))
                                 #print("previous Y is" + str(previous[y]))
@@ -226,15 +433,9 @@ def main():
                                 Set_temp.sort()
 
                                 print("retA is"+str(retA))
-                                # divide = list(set(all_frequentSet[h])-set([item])).sort()
-                                #print("%%%%%%%%%%$$$$$$$")
-                                #print(list_after_sort)
-                                #print(all_frequentSet[h])
-                                #print(Set_temp)
-                                #print("%%%%%%%%%%$$$$$$$")
+
 
                                 conf = dict[str(all_frequentSet[h])]/dict[str(Set_temp)]
-                                #print(conf)
 
                                 if conf >= int(confidence)/100:
                                     print(str(Set_temp) + "---->" + str(list_after_sort)+"conf is"+str(conf))
@@ -248,10 +449,15 @@ def main():
 
                     previous = i_length_set
     print(counter)
-    Chart.to_csv('Chart.csv',sep = ',')
-
-
-
+'''
+    # Chart.to_csv('Chart.csv',sep = ',')
+    rule = input("Please input the rule with the following pattern\n asso_rule.template1(\"BODY\", 1, ['G59_Up', 'G10_Down'])\n")
+    # asso_rule.template1("BODY", 1, ['G59_Up', 'G10_Down'])
+    #asso_rule.template2("RULE", 3)
+    #asso_rule.template3("1or1","BODY","ANY",['G10_DOWN'],"HEAD",1,['G59_Up'])
+    df = pd.read_csv("Chart.csv")
+    # print(df.RULE)
+    queryOption(rule, df)
 
     # Data = preprocess()
     # Dat = pd.DataFrame(Data)
@@ -297,265 +503,7 @@ def main():
     #     print('number of length-'+str(length)+'\tfrequent itemsets:\t'+ str(len(next_level)))
     #
 
-def queryOption(option, df):
-    template1 = "asso_rule.template1"
-    template2 = "asso_rule.template2"
-    template3 = "asso_rule.template3"
-    print(option)
-    if (option[:len(template1)] == template1):
-        queryTemp1(option[len(template1) + 1: -1], df)
-    elif(option[:len(template2)] == template2):
-        queryTemp2(option[len(template2) + 1: -1], df)
-    elif(option[:len(template3)] == template3):
-        queryTemp3(option[len(template3) + 1: -1], df)
-    return 
-def queryTemp1(template1, df):
-    result = pd.DataFrame(data=None, columns= df.columns)
-    parts = eval(template1)
-    total_set = set()
-    if parts[0] == "RULE":
-        if parts[1] == "ANY":
-            for son in parts[2]:
-                add_set = set()
-                for line in range(len(df.RULE)):
-                    print(str(line)+"\n")
-                    print(type(df.RULE[line]))
-                    #son_candidate = []
-                    #son_candidate = parts[2].split(',')
-                    father_candidate= []
-                    father_candidate = df.RULE[line].split(',')
-                    print("........."+str(set(father_candidate)))
-                    #print(",,,,,,,,,"+str(set(son_candidate)))
-                    if set([son]).issubset(set(father_candidate)):
-                        print("!!!!!!!!!!!\n")
-                        add_set.add(line)
-                total_set = total_set.union(add_set)
-            print(len(total_set),"rows selected")
-        elif (parts[1] == "NONE"):
-            total_set = set()
-            for i in range(len(df.RULE)):
-                total_set.add(i) 
-            for son in parts[2]:
-                minus_set = set()
-                
-                for line in range(len(df.RULE)):
-                    print(str(line)+"\n")
-                    print(type(df.RULE[line]))
-                    #son_candidate = []
-                    #son_candidate = parts[2].split(',')
-                    father_candidate= []
-                    father_candidate = df.RULE[line].split(',')
-                    print("........."+str(set(father_candidate)))
-                    #print(",,,,,,,,,"+str(set(son_candidate)))
-                    if set([son]).issubset(set(father_candidate)):
-                        print("!!!!!!!!!!!\n")
-                        minus_set.add(line)
-                total_set = total_set.difference(minus_set)
-            print(len(total_set),"rows selected")
-        elif (parts[1] == 1):
-            counter = []
-            counter_set = set()
-            for i in range(len(df.RULE)):
-                counter.append(0)
-            for son in parts[2]:
-                 #print(son)
-                 for line in range(len(df.RULE)):
-                    father_candidate= []
-                    father_candidate = df.RULE[line].split(',')
-                    if set([son]).issubset(set(father_candidate)): 
-                        counter[line] += 1
-            for index in range(len(counter)):
-                if counter[index] == 1:
-                    counter_set.add(index)
-            print(counter)
-            total_set = counter_set
-            print(len(counter_set))
-    elif parts[0] == "HEAD":
-        if parts[1] == "ANY":
-            for son in parts[2]:
-                add_set = set()
-                for line in range(len(df.HEAD)):
-                    print(str(line)+"\n")
-                    print(type(df.HEAD[line]))
-                    #son_candidate = []
-                    #son_candidate = parts[2].split(',')
-                    father_candidate= []
-                    father_candidate = df.HEAD[line].split(',')
-                    print("........."+str(set(father_candidate)))
-                    #print(",,,,,,,,,"+str(set(son_candidate)))
-                    if set([son]).issubset(set(father_candidate)):
-                        print("!!!!!!!!!!!\n")
-                        add_set.add(line)
-                total_set = total_set.union(add_set)
-            print(len(total_set),"rows selected")
-        elif parts[1] == "NONE":
-            total_set = set()
-            for i in range(len(df.HEAD)):
-                total_set.add(i) 
-            for son in parts[2]:
-                minus_set = set()
-                for line in range(len(df.HEAD)):
-                    print(str(line)+"\n")
-                    print(type(df.HEAD[line]))
-                    father_candidate= []
-                    father_candidate = df.HEAD[line].split(',')
-                    print("........."+str(set(father_candidate)))
-                    if set([son]).issubset(set(father_candidate)):
-                        print("!!!!!!!!!!!\n")
-                        minus_set.add(line)
-                total_set = total_set.difference(minus_set)
-            print(len(total_set),"rows selected")
-        elif parts[1] == 1:
-            counter = []
-            counter_set = set()
-            for i in range(len(df.HEAD)):
-                counter.append(0)
-            for son in parts[2]:
-                 #print(son)
-                 for line in range(len(df.HEAD)):
-                    father_candidate= []
-                    father_candidate = df.HEAD[line].split(',')
-                    if set([son]).issubset(set(father_candidate)): 
-                        counter[line] += 1
-            for index in range(len(counter)):
-                if counter[index] == 1:
-                    counter_set.add(index)
-            print(counter)
-            total_set = counter_set
-            print(len(counter_set))
-    elif parts[0] == "BODY":
-            if parts[1] == "ANY":
-                for son in parts[2]:
-                    add_set = set()
-                    for line in range(len(df.BODY)):
-                        print(str(line)+"\n")
-                        print(type(df.BODY[line]))
-                        #son_candidate = []
-                        #son_candidate = parts[2].split(',')
-                        father_candidate= []
-                        father_candidate = df.BODY[line].split(',')
-                        print("........."+str(set(father_candidate)))
-                        #print(",,,,,,,,,"+str(set(son_candidate)))
-                        if set([son]).issubset(set(father_candidate)):
-                            print("!!!!!!!!!!!\n")
-                            add_set.add(line)
-                total_set = total_set.union(add_set)
-                print(len(total_set),"rows selected")
-            elif parts[1] == "NONE":
-                total_set = set()
-                for i in range(len(df.BODY)):
-                    total_set.add(i) 
-                for son in parts[2]:
-                    minus_set = set()
-                    for line in range(len(df.BODY)):
-                        print(str(line)+"\n")
-                        print(type(df.RULE[line]))
-                        father_candidate= []
-                        father_candidate = df.BODY[line].split(',')
-                        print("........."+str(set(father_candidate)))
-                        if set([son]).issubset(set(father_candidate)):
-                            print("!!!!!!!!!!!\n")
-                            minus_set.add(line)
-                total_set = total_set.difference(minus_set)
-                print(len(total_set),"rows selected")
-            elif parts[1] == 1:
-                counter = []
-                counter_set = set()
-                for i in range(len(df.BODY)):
-                    counter.append(0)
-                for son in parts[2]:
-                         #print(son)
-                     for line in range(len(df.BODY)):
-                        father_candidate= []
-                        father_candidate = df.BODY[line].split(',')
-                        if set([son]).issubset(set(father_candidate)): 
-                            counter[line] += 1
-                for index in range(len(counter)):
-                     if counter[index] == 1:
-                        counter_set.add(index)
-                print(counter)
-                total_set = counter_set
-                print(len(counter_set))
-    return total_set
-def queryTemp2(template2, df):
-    parts = eval(template2)
-    count = 0
-    total_set = set()
-    if parts[0] == "RULE":
-        for line in range(len(df.RULE)):
-            father_candidate= []
-            father_candidate = df.RULE[line].split(',')
-            if len(father_candidate) >= parts[1]:
-                count += 1
-                total_set.add(line)
-        print(count)
-    elif parts[0] == "HEAD":
-         for line in range(len(df.HEAD)):
-            father_candidate= []
-            father_candidate = df.HEAD[line].split(',')
-            if len(father_candidate) >= parts[1]:
-                count += 1
-                total_set.add(line)
-         print(count)
-    elif parts[0] == "BODY":
-         for line in range(len(df.BODY)):
-            father_candidate= []
-            father_candidate = df.BODY[line].split(',')
-            if len(father_candidate) >= parts[1]:
-                count += 1
-                total_set.add(line)
-         print(count)
-    return total_set
-def queryTemp3(template3, df):
-    parts = eval(template3)
-    if parts[0] == "1or1":
-        count_set = set()
-        count1_set = queryTemp1(str(parts[1:4]), df)
-        count2_set = queryTemp1(str(parts[4:]), df)
-        count_set = count1_set.union(count2_set)
-        print(len(count_set))
-    elif parts[0] == "1and1":
-        count_set = set()
-        count1_set = queryTemp1(str(parts[1:4]), df)
-        count2_set = queryTemp1(str(parts[4:]), df)
-        count_set = count1_set.intersection(count2_set)
-        print(len(count_set))
-    elif parts[0] == "1or2":
-        count_set = set()
-        count1_set = queryTemp1(str(parts[1:4]), df)
-        count2_set = queryTemp2(str(parts[4:]), df)
-        count_set = count1_set.union(count2_set)
-        print(len(count_set))
-    elif parts[0] == "1and2":
-        count_set = set()
-        count1_set = queryTemp1(str(parts[1:4]), df)
-        count2_set = queryTemp2(str(parts[4:]), df)
-        count_set = count1_set.intersection(count2_set)
-        print(len(count_set))
-    elif parts[0] == "2or2":
-        count_set = set()
-        count1_set = queryTemp2(str(parts[1:3]), df)
-        count2_set = queryTemp2(str(parts[3:]), df)
-        count_set = count1_set.union(count2_set)
-        print(len(count_set))
-    elif parts[0] == "2and2":
-        count_set = set()
-        count1_set = queryTemp2(str(parts[1:3]), df)
-        count2_set = queryTemp2(str(parts[3:]), df)
-        count_set = count1_set.intersection(count2_set)
-        print(len(count_set))
-    return
-a = "asso_rule.template1(\"BODY\", \"NONE\", ['G59_Up'])"
-b = "asso_rule.template1(\"BODY\", 1, ['G59_Up', 'G10_Down'])"
-c = "asso_rule.template2(\"RULE\", 3)"
-e = "asso_rule.template2(\"HEAD\", 1)"
-f = "asso_rule.template3(\"1and1\", \"BODY\", \"ANY\", ['G10_Down'],\"HEAD\", 1,['G59_Up'])"
-h = "asso_rule.template3(\"1and2\", \"BODY\", \"ANY\", ['G10_Down'], \"HEAD\", 2)"
-g = "asso_rule.template3(\"2or2\", \"BODY\", 1, \"HEAD\", 2)"
-d = "asso_rule.template3(\"2and2\", \"BODY\", 1, \"HEAD\", 2)"
-df = pd.read_csv("Chart.csv")
-#print(df.RULE)
-queryOption(d, df)
+
 
 
 

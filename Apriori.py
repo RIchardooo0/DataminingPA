@@ -1,17 +1,9 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import itertools
 import copy
-import re
 
 
-# def set_generation(itemset, length, int):
-#     list1 = []
-#     for i in combinations(itemset, int):
-#         if len(list(set(i[0]+i[1]))) == length:
-#             list1.append(list(set(i[0]+i[1])))
-#     return list1
+
 
 def preprocess(): # Three choices pca_a.txt, pca_b.txt, pca_c.txt
     with open('associationruletestdata.txt','r')as f:
@@ -22,20 +14,6 @@ def preprocess(): # Three choices pca_a.txt, pca_b.txt, pca_c.txt
             pca = line.split(sep="\t")
             data_list.append(pca)
         return data_list
-
-
-#def sortthelist()
-"""
-def set_generation(itemset, length, int):
-    list1 = []
-    for i in combinations(itemset, int):
-        if len(list(set(i[0]+i[1]))) == length:
-            a = list(set(i[0] + i[1]))
-            # list1.append(list(set(i[0]+i[1])))
-            list1.append(a)
-
-    return list1
-"""
 
 
 def main():
@@ -65,9 +43,6 @@ def main():
                 single_candidate.add(count[0])
                 dict[str([count[0]])]=count[1]
                 all_frequentSet.append([count[0]])
-                #print("################")
-                #print(all_frequentSet)
-
 
 
     #single_candidate = [[i] for i in single_candidate]
@@ -84,7 +59,7 @@ def main():
 
     next_level_raw = list(itertools.combinations(single_candidate, 2))
 
-    # print(next_level_raw)
+
     next_level = []
     for item_son in next_level_raw:
         item_son_list = list(item_son)
@@ -97,9 +72,6 @@ def main():
             next_level.append(item_son)
             dict[str(item_son_list)] = count
             all_frequentSet.append(item_son_list)
-    # print(len(next_level))
-    # print(next_level)
-    # print(dict)
 
     print("number of length-2 frequent itemsets:\n"+str(len(next_level)))
 ###########################################################
@@ -114,8 +86,6 @@ def main():
             list_temp.sort()
             next_level_new.append(list_temp)
         #排序部分
-        # print("after sorting")
-        # print(next_level_new)
         #组合过程，从开始到n-2相同的，组合
         next_level_new1 = []
 
@@ -134,8 +104,6 @@ def main():
                    #########
                    list_after_sort.sort()
                    next_level_new1.append(list(set(list_after_sort)))
-        # print(next_level_new1)
-        # print(len(next_level_new1))
 
         list_temp1=[]
         geshu = 0 #遍历，外层儿子里层爸爸，开始频繁项集的个数
@@ -155,11 +123,6 @@ def main():
             break
         next_level = list_temp1
         print("number of length-"+str(length)+" frequent item sets is\n"+str(geshu))
-
-    # print(len(dict))
-    # print(dict)
-    # print(len(all_frequentSet))
-    # print(all_frequentSet)
 
 
         #dict是每个项集对应的出现次数
@@ -201,12 +164,7 @@ def main():
                     for x in range(len(previous)):
                         for y in range(x + 1, len(previous)):
                             L1 = previous[x][:i - 2]
-                            #print("L1 is")
-                            #print(L1)
-
                             L2 = previous[y][:i - 2]
-                            #print("L2 is")
-                            #print(L2)
                             if L1 == L2:
                                 #print("previous X is" + str(previous[x]))
                                 #print("previous Y is" + str(previous[y]))
@@ -223,15 +181,9 @@ def main():
                                 Set_temp.sort()
 
                                 print("retA is"+str(retA))
-                                # divide = list(set(all_frequentSet[h])-set([item])).sort()
-                                #print("%%%%%%%%%%$$$$$$$")
-                                #print(list_after_sort)
-                                #print(all_frequentSet[h])
-                                #print(Set_temp)
-                                #print("%%%%%%%%%%$$$$$$$")
+
 
                                 conf = dict[str(all_frequentSet[h])]/dict[str(Set_temp)]
-                                #print(conf)
 
                                 if conf >= int(confidence)/100:
                                     print(str(Set_temp) + "---->" + str(list_after_sort)+"conf is"+str(conf))

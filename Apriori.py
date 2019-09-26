@@ -35,6 +35,7 @@ def queryOption(option, df):
     elif (option[:len(template3)] == template3):
         result ,cnt = queryTemp3(option[len(template3) + 1: -1], df)
         print(result)
+        print(len(result))
         # li = [df.iloc[i,:]for i in result]
         # print()
     return
@@ -265,7 +266,7 @@ def queryTemp3(template3, df):
         count2_set,count2,data2 = queryTemp2(str(parts[3:]), df)
         count_set = count1_set.intersection(count2_set)
         print(len(count_set))
-        
+
     return count_set, len(count_set)
 
 
@@ -452,6 +453,8 @@ def main():
     # Chart.to_csv('Chart.csv',sep = ',')
     rule = input("Please input the rule with the following pattern\n asso_rule.template1(\"BODY\", 1, ['G59_Up', 'G10_Down'])\n")
     # asso_rule.template1("BODY", 1, ['G59_Up', 'G10_Down'])
+    #asso_rule.template2("RULE", 3)
+    #asso_rule.template3("1or1","BODY","ANY",['G10_DOWN'],"HEAD",1,['G59_Up'])
     df = pd.read_csv("Chart.csv")
     # print(df.RULE)
     queryOption(rule, df)

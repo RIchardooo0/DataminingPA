@@ -4,18 +4,26 @@ import numpy
 import pandas as pd
 import numpy as np
 
-data = np.loadtxt('cho.txt',delimiter='\t')
+matrix=np.genfromtxt(file, delimiter="\t")[:,2:]
+
+true_labels=list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:,1])
+
+obv_id = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:,0])
+
+X = (data - data.mean(0))
+
+
 #data = np.loadtxt('iyer.txt',delimiter='\t')
 #df = pd.DataFrame(data)
-print(data)
 
-matrix = data[:,2:]
+
+
 print(matrix)
 
-a,b = data.shape
+a,b = matrix.shape
 print(a)
 print(b)
-vector_num = b-2
+vector_num = b
 
 cluster_num = 5
 
@@ -29,7 +37,7 @@ center = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 distance =np.zeros(cluster_num+1)
 temp_cate=np.zeros(a)
 #每个类的第一个
-for cishu in range(0,20):
+for ite in range(0,20):
        for line in range(0,a):
              for cate in range(1,6): #左闭右开
                  #print(cate)

@@ -1,0 +1,18 @@
+# README
+
+
+
+Python package used:
+Python 3.7.1
+Itertools
+
+Execution in command line:
+
+python3 Association.py
+
+Query format:
+asso_rule.template1("BODY", 1, ['G59_Up', 'G10_Down'])
+asso_rule.template2("RULE", 3)
+asso_rule.template3("1or1","BODY","ANY",['G10_Down'],"HEAD",1,['G59_Up'])
+
+type 0 to exit the program

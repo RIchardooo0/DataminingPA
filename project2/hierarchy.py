@@ -5,6 +5,21 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import random
 
+
+def incidence_mat_gen(label):
+    matrix = [[0]*len(label) for i in range(len(label))]
+    for i in range(len(label)):
+        for j in range(i,len(label)):
+            if label[i] == label[j]:
+                matrix[i][j] = 1
+                matrix[j][i] = 1
+            else:
+                matrix[i][j] = 0
+                matrix[j][i] = 0
+    return np.array(matrix)
+
+
+
 def dist_cal(data):
     width,length = data.shape
     matrix = np.zeros((width,width))
@@ -60,8 +75,8 @@ def merge_list(input):
 
 
 def main():
-    file = "iyer.txt"
-    # file = "cho.txt"
+    # file = "iyer.txt"
+    file = "cho.txt"
 
     data = np.array(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 2:])
 
@@ -84,17 +99,13 @@ def main():
 
     while(len(new_id)>int(k)):
         min_index = min_find(update_matrix,min_index)
-        # print(min_index)
+
         update_matrix, new_id = matrix_update(update_matrix, min_index, new_id)
-        # print(len(new_id))
-    # print(update_matrix, new_id)
+
 
     merged_res = []
     for i in new_id:
         merged_res.append(merge_list(i))
-
-
-
 
     count = 0
     gen_result = [0 for i in range(len(ground_truth))]
@@ -102,6 +113,23 @@ def main():
         count+=1
         for j in i:
             gen_result[j-1] = count
+
+    inci_truth = incidence_mat_gen(ground_truth)
+    inci_hier = incidence_mat_gen(gen_result)
+
+    M11 = np.sum(inci_truth*inci_hier)
+
+    new_inci = inci_truth+inci_hier
+    count = 0
+    for i in range(len(new_inci)):
+        for j in range(len(new_inci[0])):
+            if new_inci[i][j] == 0:
+                count+=1
+    print(len(ground_truth))
+    M00 =count
+    rand = (M11+M00)/(len(ground_truth)**2)
+    jaccard = M11/(len(ground_truth)**2 - M00)
+    print(rand, jaccard)
 
 #PCA implementation
     df = pd.read_csv(file, sep='\t', lineterminator='\n', header=None)
@@ -139,6 +167,7 @@ def main():
                    , s=50)
     bx.legend(targets)
     bx.grid()
+#Ground truth
 #####################################
     ax = fig.add_subplot(1, 2, 1)
     ax.set_xlabel('Principal Component 1', fontsize=15)
@@ -159,7 +188,7 @@ def main():
     ax.grid()
 
     # plt.savefig('hierarchy_cho.eps')
-    plt.savefig('hierarchy_iyer.eps')
+    # plt.savefig('hierarchy_iyer.eps')
     plt.show()
 
 

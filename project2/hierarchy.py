@@ -1,7 +1,9 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
-from random import randint
+import numpy as np
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+import random
 
 def dist_cal(data):
     width,length = data.shape
@@ -21,8 +23,8 @@ def min_find(data,min_index):
     for row in range(length):
         for col in range(row,length):
             if row == col:
-                break
-            elif data[row][col]< min_value:
+                continue
+            elif data[row][col]<= min_value:
                 min_value = data[row][col]
                 min_index[0] = row
                 min_index[1] = col
@@ -31,19 +33,20 @@ def min_find(data,min_index):
 
 
 
-def matrix_update(old, index, id):
+def matrix_update(update, index, id):
     a = index[0]
     b = index[1]
-    for i in range(old.shape[0]):
-        old[a][i] = min(old[a][i], old[b][i])
-        old[i][a] = min(old[i][a], old[i][b])
+    for i in range(update.shape[0]):
+        update[a][i] = min(update[a][i], update[b][i])
+        update[i][a] = min(update[i][a], update[i][b])
     up_id = (id[a],id[b])
     id[a] = list(up_id)
-    old = np.delete(old, b, axis = 0)
-    old = np.delete(old, b, axis = 1)
+    update = np.delete(update, b, axis = 0)
+    update = np.delete(update, b, axis = 1)
 
     del id[b]
-    return old, id
+
+    return update, id
 
 def merge_list(input):
     res = []
@@ -55,52 +58,10 @@ def merge_list(input):
     return res
 
 
-def classify_and_plot(label, x_axis,y_axis,name):
-    category1 = pd.Categorical(label).categories
-    category_len = len(category1)
-    for i in category1:
-        if i == -1:
-            category_len = len(category1)-1
-
-
-    data_group = [[] for i in range(category_len)]
-    outlier = []
-    for i in range(category_len):
-        index2 = 0
-        for j in label:
-            if j == -1:
-                outlier.append(index2)
-            if i == j:
-                data_group[i].append(index2)
-            index2 += 1
-    color = ['b', 'g', 'r', 'c', 'm', 'y', 'fuchsia','yellow','cyan','lime']
-
-    if outlier:
-        groupx = []
-        groupy = []
-        for i in outlier:
-            groupx.append(x_axis[i])
-            groupy.append(y_axis[i])
-        plt.scatter(groupx, groupy, c = 'k', marker='.')
-    index3 = 0
-    for i in data_group:
-        group_x = []
-        group_y = []
-        for j in i:
-            group_y.append(y_axis[j])
-            group_x.append(x_axis[j])
-        plt.scatter(group_x, group_y, c= color[index3], marker='.')
-        index3+=1
-
-    plt.legend(labels=category1, loc='upper right')
-    plt.title(name)
-    # plt.savefig(name+'.eps')
-    plt.show()
-
 
 def main():
-    # file = "iyer.txt"
-    file = "cho.txt"
+    file = "iyer.txt"
+    # file = "cho.txt"
 
     data = np.array(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 2:])
 
@@ -110,40 +71,31 @@ def main():
 
     X = (data - data.mean(0))
 
-    k = 5
+    k = input("Please input # clusters:\n")
 
     # print(len(id))
     #initialize the matrix and ip list
     dist_matrix = dist_cal(data)
     update_matrix = dist_matrix
-    min_index = [1,0]
+    min_index = [0,1]
     new_id = id
-
     #initialize the minimum distance points
 
 
-    while(len(new_id)>k):
+    while(len(new_id)>int(k)):
         min_index = min_find(update_matrix,min_index)
+        # print(min_index)
         update_matrix, new_id = matrix_update(update_matrix, min_index, new_id)
-
+        # print(len(new_id))
     # print(update_matrix, new_id)
-
 
     merged_res = []
     for i in new_id:
         merged_res.append(merge_list(i))
 
-    cov = np.cov(X.T)
 
-    eg_value,eg_vector = np.linalg.eig(cov)
-    # print(eg_value)
-    idx = eg_value.argsort()[::-1]
-    eg_value = eg_value[idx]
-    eg_vector = eg_vector[:, idx]
-    rank1 = np.dot(X,eg_vector[:,0]).flatten()
-    rank2 = np.dot(X,eg_vector[:,1]).flatten()
 
-    # classify_and_plot(ground_truth, rank1, rank2, 'PCA_result')
+
     count = 0
     gen_result = [0 for i in range(len(ground_truth))]
     for i in merged_res:
@@ -151,7 +103,66 @@ def main():
         for j in i:
             gen_result[j-1] = count
 
-    classify_and_plot(gen_result, rank1, rank2, 'PCA_HAG_result')
+#PCA implementation
+    df = pd.read_csv(file, sep='\t', lineterminator='\n', header=None)
+
+    x = df.loc[:, 2:].values
+    y = df.loc[:, 1].values
+
+    x = StandardScaler().fit_transform(x)
+
+    pca = PCA(n_components=2)
+    principalComponents = pca.fit_transform(x)
+
+    principalDF = pd.DataFrame(data=principalComponents, columns=['principal component 1', 'principal component 2'])
+    groundtruth = pd.DataFrame(data=df.loc[:, 1].values, columns=['Label'])
+    finalDf = pd.concat([principalDF, groundtruth], axis=1)
+
+#Hierarchy result
+    my_resutl = pd.DataFrame(data = np.array(gen_result), columns = ['Label'])
+    my_Df = pd.concat([principalDF, my_resutl ],axis = 1)
+
+    fig = plt.figure(figsize=(16, 8))
+    bx = fig.add_subplot(1, 2, 2)
+    bx.set_xlabel('Principal Component 1', fontsize=15)
+    bx.set_ylabel('Principal Component 2', fontsize=15)
+    bx.set_title('2 Component PCA', fontsize=20)
+
+    targets = [ i for i in range(1,int(k)+1)]
+    colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
+
+    for target, color in zip(targets, colors):
+        indicesToKeep = my_Df['Label'] == target
+        bx.scatter(my_Df.loc[indicesToKeep, 'principal component 1']
+                   , my_Df.loc[indicesToKeep, 'principal component 2']
+                   , c=color
+                   , s=50)
+    bx.legend(targets)
+    bx.grid()
+#####################################
+    ax = fig.add_subplot(1, 2, 1)
+    ax.set_xlabel('Principal Component 1', fontsize=15)
+    ax.set_ylabel('Principal Component 2', fontsize=15)
+    ax.set_title('2 Component PCA', fontsize=20)
+
+
+    targets = [ i for i in range(1,int(k)+1)]
+    colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
+
+    for target, color in zip(targets, colors):
+        indicesToKeep = finalDf['Label'] == target
+        ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
+                   , finalDf.loc[indicesToKeep, 'principal component 2']
+                   , c=color
+                   , s=50)
+    ax.legend(targets)
+    ax.grid()
+
+    # plt.savefig('hierarchy_cho.eps')
+    plt.savefig('hierarchy_iyer.eps')
+    plt.show()
+
+
 
 
 

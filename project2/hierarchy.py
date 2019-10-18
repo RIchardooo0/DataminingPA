@@ -71,7 +71,20 @@ def merge_list(input):
     else:
         res.append(input)
     return res
+def ja_rand_cal(truth, result):
+    M11 = np.sum(truth*result)
 
+    new_inci = truth + result
+    count = 0
+    for i in range(len(new_inci)):
+        for j in range(len(new_inci[0])):
+            if new_inci[i][j] == 0:
+                count+=1
+    M00 =count
+    rand = (M11+M00)/(len(truth)**2)
+    jaccard = M11/(len(truth)**2 - M00)
+
+    return rand, jaccard
 
 
 def main():
@@ -117,18 +130,7 @@ def main():
     inci_truth = incidence_mat_gen(ground_truth)
     inci_hier = incidence_mat_gen(gen_result)
 
-    M11 = np.sum(inci_truth*inci_hier)
-
-    new_inci = inci_truth+inci_hier
-    count = 0
-    for i in range(len(new_inci)):
-        for j in range(len(new_inci[0])):
-            if new_inci[i][j] == 0:
-                count+=1
-    print(len(ground_truth))
-    M00 =count
-    rand = (M11+M00)/(len(ground_truth)**2)
-    jaccard = M11/(len(ground_truth)**2 - M00)
+    rand, jaccard = ja_rand_cal(inci_truth, inci_hier)
     print(rand, jaccard)
 
 #PCA implementation

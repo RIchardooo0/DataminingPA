@@ -1,20 +1,9 @@
-import numpy as np
-import matplotlib as plt
 import pandas as pd
-
-
-file = "iyer.txt"
-# file2 = "cho.txt"
-
-data = np.array(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:,2:])
-
-ground_truth =list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:,1])
-
-id = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:,0])
-
-X = (data - data.mean(0))
-
-k = 10
+import numpy as np
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+import random
 
 def dist_cal(data):
     width,length = data.shape
@@ -28,38 +17,154 @@ def dist_cal(data):
                 matrix[i][j] = matrix[j][i] = norm2
     return matrix
 
-def min_find(data):
-    data[data == 0] = 100
-    index = np.where(data == np.min(data))
-    data[data == 100] = 0
-    return index[0]
+def min_find(data,min_index):
+    min_value = data[0][1]
+    length = data.shape[0]
+    for row in range(length):
+        for col in range(row,length):
+            if row == col:
+                continue
+            elif data[row][col]<= min_value:
+                min_value = data[row][col]
+                min_index[0] = row
+                min_index[1] = col
+
+    return min_index
 
 
 
-def matrix_update(old, index, id):
+def matrix_update(update, index, id):
     a = index[0]
     b = index[1]
-
-    for i in range(old.shape[0]):
-        old[a][i] = min (old[a][i], old[b][i])
-        old[i][a] = min (old[i][a], old[i][b])
+    for i in range(update.shape[0]):
+        update[a][i] = min(update[a][i], update[b][i])
+        update[i][a] = min(update[i][a], update[i][b])
     up_id = (id[a],id[b])
     id[a] = list(up_id)
-    old = np.delete(old, b, axis = 0)
-    old = np.delete(old, b, axis = 1)
+    update = np.delete(update, b, axis = 0)
+    update = np.delete(update, b, axis = 1)
 
     del id[b]
 
-    return old, id
+    return update, id
+
+def merge_list(input):
+    res = []
+    if type(input) == list:
+        for i in input:
+            res  = res + merge_list(i)
+    else:
+        res.append(input)
+    return res
 
 
-print(len(id))
-#initialize the matrix and ip list
-dist_matrix = dist_cal(data)
-update_matrix = dist_matrix
-new_id = id
-while(len(new_id)>k):
-    index = min_find(update_matrix)
-    update_matrix, new_id = matrix_update(update_matrix, index, new_id)
 
-print(update_matrix, new_id)
+def main():
+    file = "iyer.txt"
+    # file = "cho.txt"
+
+    data = np.array(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 2:])
+
+    ground_truth = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 1])
+
+    id = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 0])
+
+    X = (data - data.mean(0))
+
+    k = input("Please input # clusters:\n")
+
+    # print(len(id))
+    #initialize the matrix and ip list
+    dist_matrix = dist_cal(data)
+    update_matrix = dist_matrix
+    min_index = [0,1]
+    new_id = id
+    #initialize the minimum distance points
+
+
+    while(len(new_id)>int(k)):
+        min_index = min_find(update_matrix,min_index)
+        # print(min_index)
+        update_matrix, new_id = matrix_update(update_matrix, min_index, new_id)
+        # print(len(new_id))
+    # print(update_matrix, new_id)
+
+    merged_res = []
+    for i in new_id:
+        merged_res.append(merge_list(i))
+
+
+
+
+    count = 0
+    gen_result = [0 for i in range(len(ground_truth))]
+    for i in merged_res:
+        count+=1
+        for j in i:
+            gen_result[j-1] = count
+
+#PCA implementation
+    df = pd.read_csv(file, sep='\t', lineterminator='\n', header=None)
+
+    x = df.loc[:, 2:].values
+    y = df.loc[:, 1].values
+
+    x = StandardScaler().fit_transform(x)
+
+    pca = PCA(n_components=2)
+    principalComponents = pca.fit_transform(x)
+
+    principalDF = pd.DataFrame(data=principalComponents, columns=['principal component 1', 'principal component 2'])
+    groundtruth = pd.DataFrame(data=df.loc[:, 1].values, columns=['Label'])
+    finalDf = pd.concat([principalDF, groundtruth], axis=1)
+
+#Hierarchy result
+    my_resutl = pd.DataFrame(data = np.array(gen_result), columns = ['Label'])
+    my_Df = pd.concat([principalDF, my_resutl ],axis = 1)
+
+    fig = plt.figure(figsize=(16, 8))
+    bx = fig.add_subplot(1, 2, 2)
+    bx.set_xlabel('Principal Component 1', fontsize=15)
+    bx.set_ylabel('Principal Component 2', fontsize=15)
+    bx.set_title('2 Component PCA', fontsize=20)
+
+    targets = [ i for i in range(1,int(k)+1)]
+    colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
+
+    for target, color in zip(targets, colors):
+        indicesToKeep = my_Df['Label'] == target
+        bx.scatter(my_Df.loc[indicesToKeep, 'principal component 1']
+                   , my_Df.loc[indicesToKeep, 'principal component 2']
+                   , c=color
+                   , s=50)
+    bx.legend(targets)
+    bx.grid()
+#####################################
+    ax = fig.add_subplot(1, 2, 1)
+    ax.set_xlabel('Principal Component 1', fontsize=15)
+    ax.set_ylabel('Principal Component 2', fontsize=15)
+    ax.set_title('2 Component PCA', fontsize=20)
+
+
+    targets = [ i for i in range(1,int(k)+1)]
+    colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
+
+    for target, color in zip(targets, colors):
+        indicesToKeep = finalDf['Label'] == target
+        ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
+                   , finalDf.loc[indicesToKeep, 'principal component 2']
+                   , c=color
+                   , s=50)
+    ax.legend(targets)
+    ax.grid()
+
+    # plt.savefig('hierarchy_cho.eps')
+    plt.savefig('hierarchy_iyer.eps')
+    plt.show()
+
+
+
+
+
+if __name__ == "__main__":
+    main()

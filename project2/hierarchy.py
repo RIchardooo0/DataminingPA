@@ -4,6 +4,7 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import random
+import sys
 
 
 def incidence_mat_gen(label):
@@ -89,7 +90,8 @@ def ja_rand_cal(truth, result):
 
 def main():
     # file = "iyer.txt"
-    file = "cho.txt"
+    # file = "cho.txt"
+    file = sys.argv[1]
 
     data = np.array(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 2:])
 
@@ -97,9 +99,7 @@ def main():
 
     id = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 0])
 
-    X = (data - data.mean(0))
-
-    k = input("Please input # clusters:\n")
+    k = sys.argv[2]
 
     # print(len(id))
     #initialize the matrix and ip list
@@ -137,12 +137,11 @@ def main():
     df = pd.read_csv(file, sep='\t', lineterminator='\n', header=None)
 
     x = df.loc[:, 2:].values
-    y = df.loc[:, 1].values
-
-    x = StandardScaler().fit_transform(x)
-
+    X = x - x.mean(0)
+    # x = StandardScaler().fit_transform(x)
+    # print(x)
     pca = PCA(n_components=2)
-    principalComponents = pca.fit_transform(x)
+    principalComponents = pca.fit_transform(X)
 
     principalDF = pd.DataFrame(data=principalComponents, columns=['principal component 1', 'principal component 2'])
     groundtruth = pd.DataFrame(data=df.loc[:, 1].values, columns=['Label'])
@@ -156,7 +155,7 @@ def main():
     bx = fig.add_subplot(1, 2, 2)
     bx.set_xlabel('Principal Component 1', fontsize=15)
     bx.set_ylabel('Principal Component 2', fontsize=15)
-    bx.set_title('2 Component PCA', fontsize=20)
+    bx.set_title('Ground Truth', fontsize=20)
 
     targets = [ i for i in range(1,int(k)+1)]
     colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
@@ -174,7 +173,7 @@ def main():
     ax = fig.add_subplot(1, 2, 1)
     ax.set_xlabel('Principal Component 1', fontsize=15)
     ax.set_ylabel('Principal Component 2', fontsize=15)
-    ax.set_title('2 Component PCA', fontsize=20)
+    ax.set_title('My Clustering Result', fontsize=20)
 
 
     targets = [ i for i in range(1,int(k)+1)]

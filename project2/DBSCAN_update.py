@@ -1,32 +1,28 @@
-import pandas
-import numpy
-
+import sys
 import pandas as pd
 import numpy as np
 import random
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
 
-data = np.loadtxt('new_dataset_1.txt',delimiter='\t')
-#data = np.loadtxt('iyer.txt',delimiter='\t')
-#df = pd.DataFrame(data)
-print(data)
-print(type(data))
-matrix1 = data[:,2:]
+file = sys.argv[1]
 
-f_result = data[:,1:2]
-final = []
+data = np.array(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 2:])
+
+ground_truth = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 1])
+
+id = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 0])
+
+# k = sys.argv[2]
+
+
+matrix = data
+
+f_result = ground_truth
+
+geshu, weidu = data.shape
 
 print(f_result)
-matrix = matrix1.tolist()
-print(matrix)
-geshu,total_weidu = data.shape
-
-for i in range(0,geshu):
-    final.append(int(f_result[i][0]))
-
-weidu = total_weidu-2
-print(geshu)
-print(weidu)
-
 ##########this is x's neighbor
 ##############初始化###########
 redius = 0.85
@@ -72,37 +68,34 @@ not_visited = []
 ## ini: all of the point is not visited
 for i in range(0,geshu):
     not_visited.append(i)
-print(not_visited)
+# print(not_visited)
 
 clus_num = 0;
-clus_record = []
-for i in range(0,geshu):
-   clus_record.append(0)
+clus_record = [0 for i in range(geshu)]
 #clus_record = np.zeros(geshu)
 
-print(clus_record)
 
 while len(not_visited)!=0:
     choice1 = random.randint(0, len(not_visited)-1)
     choice = not_visited[choice1]
-    print("&&&"+str(choice))
+    # print("&&&"+str(choice))
     #print("&&&"+str(locate_in_matrix(not_visited[choice],matrix)))
 
     #selected_point = not_visited[choice]
     visited.append(choice)  # append it in visited list
-    print(not_visited)
-    print("********"+str(len(not_visited)))
+    # print(not_visited)
+    # print("********"+str(len(not_visited)))
     not_visited.remove(choice)  # delete it in not_visited list
-    print("********"+str(len(not_visited)))
-    print(not_visited)
+    # print("********"+str(len(not_visited)))
+    # print(not_visited)
 
     neighbor = find_neighbor(redius,choice,matrix)
-    print("len of neighbor =" + str(len(neighbor)))
+    # print("len of neighbor =" + str(len(neighbor)))
     if len(neighbor)>=threshold: #如果它的邻居大于了门槛
         clus_num = clus_num+1
         #point_loca = locate_in_matrix(selected_point,matrix)
         clus_record[choice]=clus_num
-        print(clus_num)
+        # print(clus_num)
         for item in neighbor: # for N中的每个点 p'
             if item not in visited: #如果 p'是unvisited
                 visited.append(item)  # append it in visited list
@@ -121,11 +114,72 @@ while len(not_visited)!=0:
     else:
         clus_record[choice] = 0
 
-    print(len(not_visited))
-
-
+    # print(len(not_visited))
 print(clus_record)
-print(final)
+k = len(set(clus_record))
+print(k)
+#PCA implementation
+df = pd.read_csv(file, sep='\t', lineterminator='\n', header=None)
+
+x = df.loc[:, 2:].values
+X = x - x.mean(0)
+# x = StandardScaler().fit_transform(x)
+# print(x)
+pca = PCA(n_components=2)
+principalComponents = pca.fit_transform(X)
+
+principalDF = pd.DataFrame(data=principalComponents, columns=['principal component 1', 'principal component 2'])
+groundtruth = pd.DataFrame(data=df.loc[:, 1].values, columns=['Label'])
+finalDf = pd.concat([principalDF, groundtruth], axis=1)
+
+#DBSCAN result
+my_resutl = pd.DataFrame(data = np.array(clus_record), columns = ['Label'])
+my_Df = pd.concat([principalDF, my_resutl ],axis = 1)
+
+fig = plt.figure(figsize=(16, 8))
+bx = fig.add_subplot(1, 2, 2)
+bx.set_xlabel('Principal Component 1', fontsize=15)
+bx.set_ylabel('Principal Component 2', fontsize=15)
+bx.set_title('DBSCAN Result', fontsize=20)
+
+targets = [ i for i in range(0,int(k))]
+colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
+
+for target, color in zip(targets, colors):
+    indicesToKeep = my_Df['Label'] == target
+    bx.scatter(my_Df.loc[indicesToKeep, 'principal component 1']
+               , my_Df.loc[indicesToKeep, 'principal component 2']
+               , c=color
+               , s=50)
+bx.legend(targets)
+bx.grid()
+#Ground truth
+#####################################
+ax = fig.add_subplot(1, 2, 1)
+ax.set_xlabel('Principal Component 1', fontsize=15)
+ax.set_ylabel('Principal Component 2', fontsize=15)
+ax.set_title('Ground Truth', fontsize=20)
+
+
+targets = [ i for i in range(1,int(k))]
+colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
+
+for target, color in zip(targets, colors):
+    indicesToKeep = finalDf['Label'] == target
+    ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
+               , finalDf.loc[indicesToKeep, 'principal component 2']
+               , c=color
+               , s=50)
+ax.legend(targets)
+ax.grid()
+
+# plt.savefig('hierarchy_cho.eps')
+# plt.savefig('hierarchy_iyer.eps')
+plt.show()
+
+
+
+
 
 
 

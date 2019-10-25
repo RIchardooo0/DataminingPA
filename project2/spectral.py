@@ -97,6 +97,8 @@ def main():
     my_k_list = lambda2 - lambda1
     # print(my_k_list)
     my_k = my_k_list.argmax()+2
+    reduced_dim = eg_vector[:my_k]
+    print(reduced_dim)
     # print(my_k)
 
 

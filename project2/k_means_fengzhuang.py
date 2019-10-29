@@ -1,17 +1,14 @@
-import pandas
-import numpy
-
 import pandas as pd
 import numpy as np
 
-###########################################################
-data = np.loadtxt('cho.txt',delimiter='\t')
-#data = np.loadtxt('iyer.txt',delimiter='\t')
-#df = pd.DataFrame(data)
-print(data)
+file = "cho.txt"
+# file = sys.argv[1]
 
-matrix = data[:,2:]
-print(matrix)
+data = np.array(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 2:])
+
+ground_truth = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 1])
+
+id = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 0])
 
 num_of_line,b = data.shape
 print(num_of_line)
@@ -21,6 +18,33 @@ print(b)
 
 cluster_num = 5 #the cluster number
 
+
+def ja_rand_cal(truth, result):
+    M11 = np.sum(truth*result)
+
+    new_inci = truth + result
+    count = 0
+    for i in range(len(new_inci)):
+        for j in range(len(new_inci[0])):
+            if new_inci[i][j] == 0:
+                count+=1
+    M00 =count
+    rand = (M11+M00)/(len(truth)**2)
+    jaccard = M11/(len(truth)**2 - M00)
+
+    return rand, jaccard
+
+def incidence_mat_gen(label):
+    matrix = [[0]*len(label) for i in range(len(label))]
+    for i in range(len(label)):
+        for j in range(i,len(label)):
+            if label[i] == label[j]:
+                matrix[i][j] = 1
+                matrix[j][i] = 1
+            else:
+                matrix[i][j] = 0
+                matrix[j][i] = 0
+    return np.array(matrix)
 
 
 def kmeans(matrix,cluster_num):
@@ -117,6 +141,11 @@ def kmeans(matrix,cluster_num):
 
 
 list1 = kmeans(matrix,cluster_num)
+inci_truth = incidence_mat_gen(ground_truth)
+inci_hier = incidence_mat_gen(gen_result)
+
+rand, jaccard = ja_rand_cal(inci_truth, inci_hier)
+print(rand, jaccard)
 print(list1)
 
 

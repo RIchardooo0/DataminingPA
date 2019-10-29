@@ -22,7 +22,34 @@ f_result = ground_truth
 
 geshu, weidu = data.shape
 
-print(f_result)
+## jaccard and rand
+def ja_rand_cal(truth, result):
+    M11 = np.sum(truth*result)
+
+    new_inci = truth + result
+    count = 0
+    for i in range(len(new_inci)):
+        for j in range(len(new_inci[0])):
+            if new_inci[i][j] == 0:
+                count+=1
+    M00 =count
+    rand = (M11+M00)/(len(truth)**2)
+    jaccard = M11/(len(truth)**2 - M00)
+
+    return rand, jaccard
+
+def incidence_mat_gen(label):
+    matrix = [[0]*len(label) for i in range(len(label))]
+    for i in range(len(label)):
+        for j in range(i,len(label)):
+            if label[i] == label[j]:
+                matrix[i][j] = 1
+                matrix[j][i] = 1
+            else:
+                matrix[i][j] = 0
+                matrix[j][i] = 0
+    return np.array(matrix)
+# print(f_result)
 ##########this is x's neighbor
 ##############初始化###########
 redius = 0.85
@@ -115,21 +142,28 @@ while len(not_visited)!=0:
         clus_record[choice] = 0
 
     # print(len(not_visited))
-print(clus_record)
+# print(clus_record)
 k = len(set(clus_record))
-print(k)
+# print(k)
+# print(k)
 #PCA implementation
-df = pd.read_csv(file, sep='\t', lineterminator='\n', header=None)
+# print(clus_record)
 
-x = df.loc[:, 2:].values
-X = x - x.mean(0)
+inci_truth = incidence_mat_gen(ground_truth)
+inci_hier = incidence_mat_gen(clus_record)
+
+rand, jaccard = ja_rand_cal(inci_truth, inci_hier)
+print(rand, jaccard)
+
+clus_record = np.array(clus_record)+1
+X = data - data.mean(0)
 # x = StandardScaler().fit_transform(x)
 # print(x)
 pca = PCA(n_components=2)
 principalComponents = pca.fit_transform(X)
 
 principalDF = pd.DataFrame(data=principalComponents, columns=['principal component 1', 'principal component 2'])
-groundtruth = pd.DataFrame(data=df.loc[:, 1].values, columns=['Label'])
+groundtruth = pd.DataFrame(data=ground_truth, columns=['Label'])
 finalDf = pd.concat([principalDF, groundtruth], axis=1)
 
 #DBSCAN result
@@ -140,9 +174,10 @@ fig = plt.figure(figsize=(16, 8))
 bx = fig.add_subplot(1, 2, 2)
 bx.set_xlabel('Principal Component 1', fontsize=15)
 bx.set_ylabel('Principal Component 2', fontsize=15)
-bx.set_title('DBSCAN Result', fontsize=20)
+bx.set_title('DBSCAN Result on cho.txt', fontsize=20)
+# bx.set_title('DBSCAN Result on iyer.txt', fontsize=20)
 
-targets = [ i for i in range(0,int(k))]
+targets = [ i for i in range(1,int(k)+1)]
 colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
 
 for target, color in zip(targets, colors):
@@ -161,7 +196,7 @@ ax.set_ylabel('Principal Component 2', fontsize=15)
 ax.set_title('Ground Truth', fontsize=20)
 
 
-targets = [ i for i in range(1,int(k))]
+targets = [ i for i in range(1,int(k)+1)]
 colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
 
 for target, color in zip(targets, colors):

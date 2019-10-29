@@ -1,24 +1,26 @@
-import pandas
-import numpy
-
 import pandas as pd
 import numpy as np
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 import random
 import copy
+import sys
+from sklearn.cluster import SpectralClustering, KMeans
 
 ###########################################################
-data = np.loadtxt('new_dataset_1.txt',delimiter='\t')
-#data = np.loadtxt('iyer.txt',delimiter='\t')
+# data = np.loadtxt('new_dataset_1.txt',delimiter='\t')
+data = np.loadtxt('cho.txt',delimiter='\t')
 #df = pd.DataFrame(data)
-print(data)
+# print(data)
 
 
 matrix = data[:,2:]
-print(matrix)
+# print(matrix)
 
 num_of_line,b = data.shape
-print(num_of_line)
-print(b)
+# print(num_of_line)
+# print(b)
 num_of_vector = b-2
 
 f_result = data[:,1:2]
@@ -31,7 +33,9 @@ for i in range(0,num_of_line):
 ####     num_of_vector  ####################################
 ############################################################
 
-cluster_num = 3 #the cluster number
+# cluster_num = 3 #the cluster number
+cluster_num = 5#for cho
+# cluster_num = 10#for iyer
 
 ############################################################
 ####     initialize the cluster center #####################
@@ -45,17 +49,17 @@ min_every_vec = []
 for j in range(num_of_vector):
     min_of_col_j = min(matrix[:,j])
     max_of_col_j = max(matrix[:,j])
-    print(min_of_col_j)
-    print(max_of_col_j)
-    print(float(max_of_col_j-min_of_col_j))
+    # print(min_of_col_j)
+    # print(max_of_col_j)
+    # print(float(max_of_col_j-min_of_col_j))
     min_every_vec.append(min_of_col_j)
     range_every_vec.append((max_of_col_j*10000-min_of_col_j*10000)/10000)
-print(range_every_vec)
+# print(range_every_vec)
 
 rand = np.random.rand(num_of_vector, 1)
 rand_forcal = rand.T.flatten()
 
-print(rand_forcal)
+# print(rand_forcal)
 center = []
 
 for i in range(cluster_num):
@@ -65,7 +69,7 @@ for i in range(cluster_num):
     center_sub = min_every_vec+range_every_vec*rand_forcal
     center.append(list(center_sub))
 
-print(center)
+# print(center)
 
 #######################################################################################
 ##################
@@ -81,7 +85,7 @@ for cishu in range(0,1000):
     #print(cishu)
 
     old_belongto_which_cluster_list = copy.deepcopy(belongto_which_cluster_list)
-    print(old_belongto_which_cluster_list)
+    # print(old_belongto_which_cluster_list)
     for line in range(0,num_of_line):
         #print(line)
         #dist_between_point_and_center = []
@@ -102,10 +106,10 @@ for cishu in range(0,1000):
                 min_dis = dist_between_point_and_center[iter]
                 belong_to_which_center_temp = iter
         belongto_which_cluster_list[line] = belong_to_which_center_temp
-    print("@@@@@@@2")
-    #########################更新聚类中心#########################
-    print(old_belongto_which_cluster_list)
-    print(belongto_which_cluster_list)
+    # print("@@@@@@@2")
+    # #########################更新聚类中心#########################
+    # print(old_belongto_which_cluster_list)
+    # print(belongto_which_cluster_list)
 
 
     counter = np.zeros(cluster_num)
@@ -117,7 +121,7 @@ for cishu in range(0,1000):
                 center[i]=list(np.array(center[i])+np.array(matrix[line]))
                 counter[i] = counter[i]+1
                 break
-    print(counter)
+    # print(counter)
     for category_num in range(0, cluster_num):
         if counter[category_num]==0:
             rand_point_num = random.randint(0,num_of_line-1)
@@ -126,10 +130,10 @@ for cishu in range(0,1000):
             for vector in range(0, num_of_vector):
                   center[category_num][vector] = center[category_num][vector]/counter[category_num]
 
-    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-
-    print(old_belongto_which_cluster_list)
-    print(belongto_which_cluster_list)
+    # print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+    #
+    # print(old_belongto_which_cluster_list)
+    # print(belongto_which_cluster_list)
 
     if np.all(old_belongto_which_cluster_list == belongto_which_cluster_list):
         break
@@ -184,7 +188,73 @@ rand1,jaccard = ja_rand_cal(truth, result)
 print("jaccard is"+str(jaccard))
 print("rand is"+str(rand1))
 
+##
+# file = "iyer.txt"
+file = "cho.txt"
+# file = sys.argv[1]
+belongto_which_cluster_list = np.array(belongto_which_cluster_list) + 1
 
+data = np.array(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 2:])
+
+ground_truth = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 1])
+
+id = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 0])
+
+X = data - data.mean(0)
+# x = StandardScaler().fit_transform(x)
+# print(x)
+pca = PCA(n_components=2)
+principalComponents = pca.fit_transform(X)
+
+principalDF = pd.DataFrame(data=principalComponents, columns=['principal component 1', 'principal component 2'])
+groundtruth = pd.DataFrame(data=ground_truth, columns=['Label'])
+finalDf = pd.concat([principalDF, groundtruth], axis=1)
+
+#DBSCAN result
+my_resutl = pd.DataFrame(data = np.array(belongto_which_cluster_list), columns = ['Label'])
+my_Df = pd.concat([principalDF, my_resutl ],axis = 1)
+
+fig = plt.figure(figsize=(16, 8))
+bx = fig.add_subplot(1, 2, 2)
+bx.set_xlabel('Principal Component 1', fontsize=15)
+bx.set_ylabel('Principal Component 2', fontsize=15)
+bx.set_title('DBSCAN Result on cho.txt', fontsize=20)
+# bx.set_title('DBSCAN Result on iyer.txt', fontsize=20)
+
+targets = [ i for i in range(1,cluster_num+1)]
+colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(cluster_num)]
+
+for target, color in zip(targets, colors):
+    indicesToKeep = my_Df['Label'] == target
+    bx.scatter(my_Df.loc[indicesToKeep, 'principal component 1']
+               , my_Df.loc[indicesToKeep, 'principal component 2']
+               , c=color
+               , s=50)
+bx.legend(targets)
+bx.grid()
+#Ground truth
+#####################################
+ax = fig.add_subplot(1, 2, 1)
+ax.set_xlabel('Principal Component 1', fontsize=15)
+ax.set_ylabel('Principal Component 2', fontsize=15)
+ax.set_title('Ground Truth', fontsize=20)
+
+
+targets = [ i for i in range(1,cluster_num+1)]
+colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(cluster_num)]
+
+for target, color in zip(targets, colors):
+    indicesToKeep = finalDf['Label'] == target
+    ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
+               , finalDf.loc[indicesToKeep, 'principal component 2']
+               , c=color
+               , s=50)
+ax.legend(targets)
+ax.grid()
+
+# plt.savefig('hierarchy_cho.eps')
+# plt.savefig('hierarchy_iyer.eps')
+plt.show()
 #print(belongto_which_cluster_list)
 #print(final)
 

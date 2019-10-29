@@ -1,7 +1,11 @@
 import pandas as pd
 import numpy as np
-from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+import random
 import sys
+from sklearn.cluster import SpectralClustering, KMeans
 
 def incidence_mat_gen(label):
     matrix = [[0]*len(label) for i in range(len(label))]
@@ -28,7 +32,7 @@ def ja_rand_cal(truth, result):
     rand = (M11+M00)/(len(truth)**2)
     jaccard = M11/(len(truth)**2 - M00)
 
-return rand, jaccard
+    return rand, jaccard
 
 
 def gmm_init(attributes, K):
@@ -91,7 +95,8 @@ def m_step(pi, prob_matrix, attributes, r, means, covs):
     return covs_list, u_list, pi_new
 
 
-data = np.loadtxt('new_dataset_1.txt',delimiter='\t')
+# data = np.loadtxt('new_dataset_1.txt',delimiter='\t')
+data = np.loadtxt('cho.txt',delimiter='\t')
 label = data[:,1]
 clusters = set((data[:,1]))
 clusters.discard(-1)
@@ -126,18 +131,84 @@ rand1,jaccard = ja_rand_cal(truth, result)
 
 print("shoulu"+str(jaccard))
 
+#
+# from sklearn.mixture import GaussianMixture
+# data = np.loadtxt('cho.txt',delimiter='\t')
+# # data = np.loadtxt('new_dataset_1.txt',delimiter='\t')
+# df = pd.DataFrame(data[:,2:])
+# gmm = GaussianMixture(n_components = 3)
+# gmm.fit(df)
+# labels = gmm.predict(df)
+# truth = incidence_mat_gen(label)
+# result = incidence_mat_gen(labels)
+#
+# rand1,jaccard = ja_rand_cal(truth, result)
+#
+# print("diaobao"+str(jaccard))
+#PCA implementation
+# print(labels)
+labels = np.array(labels)+1
+file = "cho.txt"
+df = pd.read_csv(file, sep='\t', lineterminator='\n', header=None)
 
-from sklearn.mixture import GaussianMixture
-data = np.loadtxt('new_dataset_1.txt',delimiter='\t')
-df = pd.DataFrame(data[:,2:])
-gmm = GaussianMixture(n_components = 3)
-gmm.fit(df)
-labels = gmm.predict(df)
-truth = incidence_mat_gen(label)
-result = incidence_mat_gen(labels)
+x = df.loc[:, 2:].values
+X = x - x.mean(0)
+# x = StandardScaler().fit_transform(x)
+# print(x)
+pca = PCA(n_components=2)
+principalComponents = pca.fit_transform(X)
 
-rand1,jaccard = ja_rand_cal(truth, result)
+principalDF = pd.DataFrame(data=principalComponents, columns=['principal component 1', 'principal component 2'])
+groundtruth = pd.DataFrame(data=df.loc[:, 1].values, columns=['Label'])
+finalDf = pd.concat([principalDF, groundtruth], axis=1)
 
-print("diaobao"+str(jaccard))
+#Spectral result
+my_resutl = pd.DataFrame(data = np.array(labels), columns = ['Label'])
+my_Df = pd.concat([principalDF, my_resutl ],axis = 1)
+
+fig = plt.figure(figsize=(16, 8))
+bx = fig.add_subplot(1, 2, 2)
+bx.set_xlabel('Principal Component 1', fontsize=15)
+bx.set_ylabel('Principal Component 2', fontsize=15)
+bx.set_title('GMM Clustering Result on cho.txt', fontsize=20)
+# bx.set_title('Spectral Clustering Result on iyer.txt', fontsize=20)
+
+targets = [ i for i in range(1,K+1)]
+colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(K)]
+
+for target, color in zip(targets, colors):
+    indicesToKeep = my_Df['Label'] == target
+    bx.scatter(my_Df.loc[indicesToKeep, 'principal component 1']
+               , my_Df.loc[indicesToKeep, 'principal component 2']
+               , c=color
+               , s=50)
+bx.legend(targets)
+bx.grid()
+#Ground truth
+#####################################
+ax = fig.add_subplot(1, 2, 1)
+ax.set_xlabel('Principal Component 1', fontsize=15)
+ax.set_ylabel('Principal Component 2', fontsize=15)
+ax.set_title('Ground Truth', fontsize=20)
+
+
+
+
+targets = [ i for i in range(1,K+1)]
+colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(K)]
+
+for target, color in zip(targets, colors):
+    indicesToKeep = finalDf['Label'] == target
+    ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
+               , finalDf.loc[indicesToKeep, 'principal component 2']
+               , c=color
+               , s=50)
+ax.legend(targets)
+ax.grid()
+
+# plt.savefig('hierarchy_cho.eps')
+# plt.savefig('hierarchy_iyer.eps')
+plt.show()
+
 
 

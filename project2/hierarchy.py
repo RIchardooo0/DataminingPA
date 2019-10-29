@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import random
 import sys
@@ -153,7 +152,8 @@ def main():
     bx = fig.add_subplot(1, 2, 2)
     bx.set_xlabel('Principal Component 1', fontsize=15)
     bx.set_ylabel('Principal Component 2', fontsize=15)
-    bx.set_title('Ground Truth', fontsize=20)
+    # bx.set_title('Hierarchical Clustering Result on Cho.txt', fontsize=20)
+    bx.set_title('Hierarchical Clustering Result on iyer.txt', fontsize=20)
 
     targets = [ i for i in range(1,int(k)+1)]
     colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
@@ -171,7 +171,7 @@ def main():
     ax = fig.add_subplot(1, 2, 1)
     ax.set_xlabel('Principal Component 1', fontsize=15)
     ax.set_ylabel('Principal Component 2', fontsize=15)
-    ax.set_title('My Clustering Result', fontsize=20)
+    ax.set_title('Ground Truth', fontsize=20)
 
 
     targets = [ i for i in range(1,int(k)+1)]
@@ -185,9 +185,8 @@ def main():
                    , s=50)
     ax.legend(targets)
     ax.grid()
-
     # plt.savefig('hierarchy_cho.eps')
-    # plt.savefig('hierarchy_iyer.eps')
+    plt.savefig('hierarchy_iyer.eps')
     plt.show()
 
 

@@ -2,13 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61410f03-ac00-4b5f-99ea-9bdaa905550f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/spectral_test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/project2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/project2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hierarchy.py" beforeDir="false" afterPath="$PROJECT_DIR$/hierarchy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/k_means_fengzhuang.py" beforeDir="false" afterPath="$PROJECT_DIR$/k_means_fengzhuang.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spectral.py" beforeDir="false" afterPath="$PROJECT_DIR$/spectral.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/Association/Apriori_final.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/Association/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/Association/report2.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/.idea/CODE.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/PCA.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/pca_a.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/pca_b.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/pca_c.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/pca_demo.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/PCA report.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/PCA_a.eps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/PCA_b.eps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/PCA_c.eps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/svd_a.eps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/svd_b.eps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/svd_c.eps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/tsne_a.eps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/tsne_b.eps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/tsne_c.eps" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DBSCAN_update.py" beforeDir="false" afterPath="$PROJECT_DIR$/DBSCAN_update.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gmm.py" beforeDir="false" afterPath="$PROJECT_DIR$/gmm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kmeans_update4.py" beforeDir="false" afterPath="$PROJECT_DIR$/kmeans_update4.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,8 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/spectral.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
-              <caret line="121" column="28" lean-forward="true" selection-start-line="121" selection-start-column="28" selection-end-line="121" selection-end-column="28" />
+            <state relative-caret-position="118">
+              <caret line="87" column="21" lean-forward="true" selection-start-line="87" selection-start-column="21" selection-end-line="87" selection-end-column="21" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -31,12 +52,36 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spectral_test.py">
+        <entry file="file://$PROJECT_DIR$/DBSCAN_update.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="23" column="34" selection-start-line="23" selection-start-column="34" selection-end-line="23" selection-end-column="34" />
+            <state relative-caret-position="741">
+              <caret line="157" column="20" lean-forward="true" selection-start-line="157" selection-start-column="20" selection-end-line="157" selection-end-column="20" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gmm.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2775">
+              <caret line="185" column="9" lean-forward="true" selection-start-line="185" selection-start-column="9" selection-end-line="185" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/kmeans_update4.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="199" lean-forward="true" selection-start-line="199" selection-end-line="199" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -45,8 +90,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hierarchy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1020">
-              <caret line="74" column="31" selection-start-line="74" selection-start-column="31" selection-end-line="74" selection-end-column="31" />
+            <state relative-caret-position="69">
+              <caret line="157" column="40" selection-start-line="157" selection-start-column="40" selection-end-line="157" selection-end-column="40" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -65,12 +110,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>print</find>
       <find>k</find>
       <find>old</find>
       <find>hexcolor</find>
       <find>inci_hier</find>
       <find>final</find>
+      <find>print</find>
     </findStrings>
     <replaceStrings>
       <replace>update</replace>
@@ -89,11 +134,13 @@
         <option value="$PROJECT_DIR$/PCAimplement.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/not_mine.py" />
-        <option value="$PROJECT_DIR$/DBSCAN_update.py" />
         <option value="$PROJECT_DIR$/spectral_test.py" />
-        <option value="$PROJECT_DIR$/hierarchy.py" />
         <option value="$PROJECT_DIR$/k_means_fengzhuang.py" />
+        <option value="$PROJECT_DIR$/hierarchy.py" />
         <option value="$PROJECT_DIR$/spectral.py" />
+        <option value="$PROJECT_DIR$/gmm.py" />
+        <option value="$PROJECT_DIR$/DBSCAN_update.py" />
+        <option value="$PROJECT_DIR$/kmeans_update4.py" />
       </list>
     </option>
   </component>
@@ -139,7 +186,49 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.spectral">
+  <component name="RunManager" selected="Python.kmeans_update4">
+    <configuration name="DBSCAN_update" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="project2" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DBSCAN_update.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="gmm" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="project2" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gmm.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="hierarchy" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="project2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -161,40 +250,19 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="k_means_fengzhuang" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="kmeans_update4" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="project2" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/.conda/envs/PCA/bin/python" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/k_means_fengzhuang.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="kmeans" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="project2" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/.conda/envs/PCA/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/kmeans.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/kmeans_update4.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -224,33 +292,12 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="spectral_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="project2" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/.conda/envs/PCA/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/spectral_test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.kmeans_update4" />
+        <item itemvalue="Python.gmm" />
+        <item itemvalue="Python.DBSCAN_update" />
         <item itemvalue="Python.spectral" />
-        <item itemvalue="Python.spectral_test" />
-        <item itemvalue="Python.kmeans" />
-        <item itemvalue="Python.k_means_fengzhuang" />
         <item itemvalue="Python.hierarchy" />
       </list>
     </recent_temporary>
@@ -294,7 +341,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32919955" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32807216" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="10" visible="true" weight="0.32694477" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32694477" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -307,46 +354,9 @@
     <entry file="file://$PROJECT_DIR$/myresult" />
     <entry file="file://$PROJECT_DIR$/hierarchy_iyer.png" />
     <entry file="file://$PROJECT_DIR$/hierarchy_iyer.eps" />
-    <entry file="file://$PROJECT_DIR$/DBSCAN_update.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="23" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PCAimplement.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/not_mine.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="556">
-          <caret line="74" selection-start-line="74" selection-end-line="74" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="176" selection-start-line="176" selection-end-line="176" />
-          <folding>
-            <element signature="e#57#75#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/PCAimplement.py" />
+    <entry file="file://$PROJECT_DIR$/not_mine.py" />
+    <entry file="file://$PROJECT_DIR$/test.py" />
     <entry file="file://$PROJECT_DIR$/iyer.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-5755" />
@@ -359,16 +369,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/k_means_fengzhuang.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1030">
-          <caret line="12" column="26" lean-forward="true" selection-start-line="12" selection-start-column="26" selection-end-line="12" selection-end-column="26" />
-          <folding>
-            <element signature="e#1#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/k_means_fengzhuang.py" />
     <entry file="file://$PROJECT_DIR$/kmeans.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -379,30 +380,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/spectral.py">
+    <entry file="file://$PROJECT_DIR$/spectral_test.py" />
+    <entry file="file://$PROJECT_DIR$/kmeans_update4.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="121" column="28" lean-forward="true" selection-start-line="121" selection-start-column="28" selection-end-line="121" selection-end-column="28" />
+        <state relative-caret-position="340">
+          <caret line="199" lean-forward="true" selection-start-line="199" selection-end-line="199" />
           <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spectral_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="23" column="34" selection-start-line="23" selection-start-column="34" selection-end-line="23" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hierarchy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="74" column="31" selection-start-line="74" selection-start-column="31" selection-end-line="74" selection-end-column="31" />
+        <state relative-caret-position="69">
+          <caret line="157" column="40" selection-start-line="157" selection-start-column="40" selection-end-line="157" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2775">
+          <caret line="185" column="9" lean-forward="true" selection-start-line="185" selection-start-column="9" selection-end-line="185" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DBSCAN_update.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="741">
+          <caret line="157" column="20" lean-forward="true" selection-start-line="157" selection-start-column="20" selection-end-line="157" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spectral.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="87" column="21" lean-forward="true" selection-start-line="87" selection-start-column="21" selection-end-line="87" selection-end-column="21" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

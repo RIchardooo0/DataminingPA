@@ -109,10 +109,8 @@ def main():
     new_id = id
     #initialize the minimum distance points
 
-
     while(len(new_id)>int(k)):
         min_index = min_find(update_matrix,min_index)
-
         update_matrix, new_id = matrix_update(update_matrix, min_index, new_id)
 
 

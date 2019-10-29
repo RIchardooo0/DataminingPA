@@ -40,7 +40,7 @@ def sim_cal(data, sig):
     sim_matrix = np.array([[0]*length for j in range(length)]).astype(np.float64)
     for i in range(length):
         for j in range(i+1, length):
-            result = np.exp(-np.linalg.norm(data[i]-data[j])/(sig**2))
+            result = (np.exp(-np.linalg.norm(data[i]-data[j])/(sig**2))).astype(float)
             # result = np.around(result, decimals = 2)
             sim_matrix[i][j] = result
             sim_matrix[j][i] = result
@@ -55,8 +55,8 @@ def deg_cal(matrix):
     return result_mat
 
 def main():
-    # file = "iyer.txt"
-    file = "cho.txt"
+    file = "iyer.txt"
+    # file = "cho.txt"
     # file = sys.argv[1]
 
 
@@ -67,60 +67,60 @@ def main():
     id = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 0])
 
     # k = sys.argv[2]
-    k = 5
+    k = 10
     # narray =
 # My code should be here. Finally a generated label list called gen_result should be generated
 #######################################
     #
-    for i in range(25,100):
-        sig = i/100
-        print(sig)
+    # for i in range(50,100):
+    #     sig = i/100
+    #     print(sig)
 
 #matrix generating and normalizing
-        #sig = 0.29
-        #rand = 0.706381379365889 jaccard = 0.1920960295475531
-        simatrix = sim_cal(data, sig)
-        dgmatrix = deg_cal(simatrix)
-        Lap_mat = dgmatrix - simatrix
-        # print(Lap_mat)
-        # dg_inv = np.linalg.inv(dgmatrix)
-        # norm_Lap = np.dot(dg_inv,Lap_mat)
-        # print(norm_Lap)
-    # #eigen value and vecgor generation
-        eg_value, eg_vector = np.linalg.eig(Lap_mat)
+    # for cho.txt sig = 0.29
+    #rand = 0.706381379365889 jaccard = 0.1920960295475531
+    simatrix = sim_cal(data, 0.32)
+    dgmatrix = deg_cal(simatrix)
+    Lap_mat = dgmatrix - simatrix
+    # print(Lap_mat)
+    # dg_inv = np.linalg.inv(dgmatrix)
+    # norm_Lap = np.dot(dg_inv,Lap_mat)
+    # print(norm_Lap)
+# #eigen value and vecgor generation
+    eg_value, eg_vector = np.linalg.eig(Lap_mat)
 
-        sorted_indices = np.argsort(eg_value)
-    #sort eigen values and eigen vectors
-        new_egvalue = eg_value[sorted_indices]
-        new_egvector = eg_vector[sorted_indices]
+    sorted_indices = np.argsort(eg_value)
+#sort eigen values and eigen vectors
+    new_egvalue = eg_value[sorted_indices]
+    new_egvector = eg_vector[sorted_indices]
 
-        lambda1 = new_egvalue[:-1]
-        lambda2 = new_egvalue[1:]
-        my_k_list = lambda2 - lambda1
-        # print(my_k_list)
-        my_k = my_k_list.argmax()+2
-        print(my_k)
-        reduced_dim = new_egvector[:my_k]
-        # result = kmeans(reduced_dim.T, k)+1
-        # print(result.astype(int))
-        #km = KMeans(init = narray, n_clusters = k)
-        km = KMeans(init = 'k-means++', n_clusters = k)
-        km.fit(reduced_dim.T)
-        km.labels_
-        # print(km.labels_)
+    lambda1 = new_egvalue[:-1]
+    lambda2 = new_egvalue[1:]
+    my_k_list = lambda2 - lambda1
+    # print(my_k_list)
+    my_k = my_k_list.argmax()+2
+    print(my_k)
+    reduced_dim = new_egvector[:my_k]
+    # result = kmeans(reduced_dim.T, k)+1
+    # print(result.astype(int))
+    #km = KMeans(init = narray, n_clusters = k)
+    km = KMeans(init = 'k-means++', n_clusters = k)
+    km.fit(reduced_dim.T)
+    km.labels_
+    # print(km.labels_)
 
-    ########################################
+########################################
 
-        # gen_result = result.astype(int)
-        gen_result = km.labels_ +1
+    # gen_result = result.astype(int)
+    gen_result = km.labels_ +1
 
 
-        inci_truth = incidence_mat_gen(ground_truth)
-        inci_hier = incidence_mat_gen(gen_result)
+    inci_truth = incidence_mat_gen(ground_truth)
+    inci_hier = incidence_mat_gen(gen_result)
 
-        rand, jaccard = ja_rand_cal(inci_truth, inci_hier)
-        print(rand, jaccard)
-'''
+    rand, jaccard = ja_rand_cal(inci_truth, inci_hier)
+    print(rand, jaccard)
+
 #PCA implementation
     df = pd.read_csv(file, sep='\t', lineterminator='\n', header=None)
 
@@ -143,7 +143,8 @@ def main():
     bx = fig.add_subplot(1, 2, 2)
     bx.set_xlabel('Principal Component 1', fontsize=15)
     bx.set_ylabel('Principal Component 2', fontsize=15)
-    bx.set_title('Ground Truth', fontsize=20)
+    bx.set_title('Spectral Clustering Result on cho.txt', fontsize=20)
+    # bx.set_title('Spectral Clustering Result on iyer.txt', fontsize=20)
 
     targets = [ i for i in range(1,int(k)+1)]
     colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
@@ -161,7 +162,9 @@ def main():
     ax = fig.add_subplot(1, 2, 1)
     ax.set_xlabel('Principal Component 1', fontsize=15)
     ax.set_ylabel('Principal Component 2', fontsize=15)
-    ax.set_title('My Clustering Result', fontsize=20)
+    ax.set_title('Ground Truth', fontsize=20)
+
+
 
 
     targets = [ i for i in range(1,int(k)+1)]
@@ -180,7 +183,7 @@ def main():
     # plt.savefig('hierarchy_iyer.eps')
     plt.show()
 
-'''
+
 
 
 

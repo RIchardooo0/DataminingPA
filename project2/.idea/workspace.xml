@@ -2,34 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61410f03-ac00-4b5f-99ea-9bdaa905550f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../project1 2/Association/Apriori_final.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/Association/README" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/Association/report2.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/.idea/CODE.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/PCA.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/pca_a.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/pca_b.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/pca_c.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/CODE/pca_demo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/PCA report.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/PCA_a.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/PCA_b.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/PCA_c.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/svd_a.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/svd_b.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/svd_c.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/tsne_a.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/tsne_b.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../project1 2/PCA/tsne_c.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DBSCAN_update.py" beforeDir="false" afterPath="$PROJECT_DIR$/DBSCAN_update.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gmm.py" beforeDir="false" afterPath="$PROJECT_DIR$/gmm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kmeans_update4.py" beforeDir="false" afterPath="$PROJECT_DIR$/kmeans_update4.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spectral.py" beforeDir="false" afterPath="$PROJECT_DIR$/spectral.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/spectral.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="118">
-              <caret line="87" column="21" lean-forward="true" selection-start-line="87" selection-start-column="21" selection-end-line="87" selection-end-column="21" />
+            <state relative-caret-position="241">
+              <caret line="108" column="40" selection-start-line="108" selection-start-column="40" selection-end-line="108" selection-end-column="40" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -52,22 +26,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DBSCAN_update.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="741">
-              <caret line="157" column="20" lean-forward="true" selection-start-line="157" selection-start-column="20" selection-end-line="157" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gmm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2775">
-              <caret line="185" column="9" lean-forward="true" selection-start-line="185" selection-start-column="9" selection-end-line="185" selection-end-column="9" />
+            <state relative-caret-position="2670">
+              <caret line="185" column="9" selection-start-line="185" selection-start-column="9" selection-end-line="185" selection-end-column="9" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -78,11 +40,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/kmeans_update4.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="199" lean-forward="true" selection-start-line="199" selection-end-line="199" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="2865">
+              <caret line="199" selection-start-line="199" selection-end-line="199" />
             </state>
           </provider>
         </entry>
@@ -90,8 +49,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hierarchy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="157" column="40" selection-start-line="157" selection-start-column="40" selection-end-line="157" selection-end-column="40" />
+            <state relative-caret-position="2430">
+              <caret line="167" column="13" selection-start-line="167" selection-start-column="13" selection-end-line="167" selection-end-column="13" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -137,14 +96,15 @@
         <option value="$PROJECT_DIR$/spectral_test.py" />
         <option value="$PROJECT_DIR$/k_means_fengzhuang.py" />
         <option value="$PROJECT_DIR$/hierarchy.py" />
-        <option value="$PROJECT_DIR$/spectral.py" />
         <option value="$PROJECT_DIR$/gmm.py" />
         <option value="$PROJECT_DIR$/DBSCAN_update.py" />
         <option value="$PROJECT_DIR$/kmeans_update4.py" />
+        <option value="$PROJECT_DIR$/spectral.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="840" />
     <option name="y" value="23" />
     <option name="width" value="840" />
     <option name="height" value="979" />
@@ -185,7 +145,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.kmeans_update4">
+  <component name="RunManager" selected="Python.spectral">
     <configuration name="DBSCAN_update" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="project2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -293,10 +253,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.spectral" />
         <item itemvalue="Python.kmeans_update4" />
         <item itemvalue="Python.gmm" />
         <item itemvalue="Python.DBSCAN_update" />
-        <item itemvalue="Python.spectral" />
         <item itemvalue="Python.hierarchy" />
       </list>
     </recent_temporary>
@@ -325,7 +285,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="840" y="23" width="840" height="979" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14774115" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -380,40 +339,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/spectral_test.py" />
-    <entry file="file://$PROJECT_DIR$/kmeans_update4.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="199" lean-forward="true" selection-start-line="199" selection-end-line="199" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hierarchy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="157" column="40" selection-start-line="157" selection-start-column="40" selection-end-line="157" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gmm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2775">
-          <caret line="185" column="9" lean-forward="true" selection-start-line="185" selection-start-column="9" selection-end-line="185" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DBSCAN_update.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="741">
-          <caret line="157" column="20" lean-forward="true" selection-start-line="157" selection-start-column="20" selection-end-line="157" selection-end-column="20" />
+          <caret line="157" column="20" selection-start-line="157" selection-start-column="20" selection-end-line="157" selection-end-column="20" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
@@ -422,8 +351,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/spectral.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="87" column="21" lean-forward="true" selection-start-line="87" selection-start-column="21" selection-end-line="87" selection-end-column="21" />
+        <state relative-caret-position="241">
+          <caret line="108" column="40" selection-start-line="108" selection-start-column="40" selection-end-line="108" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gmm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2670">
+          <caret line="185" column="9" selection-start-line="185" selection-start-column="9" selection-end-line="185" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kmeans_update4.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2865">
+          <caret line="199" selection-start-line="199" selection-end-line="199" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hierarchy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2430">
+          <caret line="167" column="13" selection-start-line="167" selection-start-column="13" selection-end-line="167" selection-end-column="13" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

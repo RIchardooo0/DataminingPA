@@ -55,8 +55,8 @@ def deg_cal(matrix):
     return result_mat
 
 def main():
-    file = "iyer.txt"
-    # file = "cho.txt"
+    # file = "iyer.txt"
+    file = "cho.txt"
     # file = sys.argv[1]
 
 
@@ -66,48 +66,50 @@ def main():
 
     id = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 0])
 
-    # k = sys.argv[2]
-    k = 10
+    # k = int(sys.argv[2])
+    k = 5
     # narray =
 # My code should be here. Finally a generated label list called gen_result should be generated
 #######################################
-    #
-    # for i in range(50,100):
+    # #
+    # for i in range(30,150):
     #     sig = i/100
     #     print(sig)
 
 #matrix generating and normalizing
-    # for cho.txt sig = 0.29
+    # for cho.txt sig = 0.44
     #rand = 0.706381379365889 jaccard = 0.1920960295475531
-    simatrix = sim_cal(data, 0.32)
+    simatrix = sim_cal(data, 1)
     dgmatrix = deg_cal(simatrix)
     Lap_mat = dgmatrix - simatrix
     # print(Lap_mat)
-    # dg_inv = np.linalg.inv(dgmatrix)
-    # norm_Lap = np.dot(dg_inv,Lap_mat)
+    dg_inv = np.linalg.inv(dgmatrix)
+    norm_Lap = np.dot(dg_inv,Lap_mat)
     # print(norm_Lap)
 # #eigen value and vecgor generation
-    eg_value, eg_vector = np.linalg.eig(Lap_mat)
+    eg_value, eg_vector = np.linalg.eig(norm_Lap)
 
     sorted_indices = np.argsort(eg_value)
 #sort eigen values and eigen vectors
-    new_egvalue = eg_value[sorted_indices]
-    new_egvector = eg_vector[sorted_indices]
+    new_index = sorted_indices[0:k]
+    new_egvector = eg_vector[:,new_index]
 
-    lambda1 = new_egvalue[:-1]
-    lambda2 = new_egvalue[1:]
-    my_k_list = lambda2 - lambda1
-    # print(my_k_list)
-    my_k = my_k_list.argmax()+2
-    print(my_k)
-    reduced_dim = new_egvector[:my_k]
+    # lambda1 = new_egvalue[:-1]
+    # lambda2 = new_egvalue[1:]
+    # my_k_list = lambda2 - lambda1
+    # my_k = my_k_list.argmax()+2
+    # print(my_k)
+    # reduced_dim = new_egvector[:my_k]
+
+
+    reduced_dim = new_egvector
     # result = kmeans(reduced_dim.T, k)+1
     # print(result.astype(int))
     #km = KMeans(init = narray, n_clusters = k)
     km = KMeans(init = 'k-means++', n_clusters = k)
-    km.fit(reduced_dim.T)
+    km.fit(reduced_dim)
     km.labels_
-    # print(km.labels_)
+    print(km.labels_)
 
 ########################################
 
@@ -182,8 +184,6 @@ def main():
     # plt.savefig('hierarchy_cho.eps')
     # plt.savefig('hierarchy_iyer.eps')
     plt.show()
-
-
 
 
 

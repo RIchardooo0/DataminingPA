@@ -129,7 +129,7 @@ def main():
 
     rand, jaccard = ja_rand_cal(inci_truth, inci_hier)
     print(rand, jaccard)
-
+    print(new_id)
 #PCA implementation
     df = pd.read_csv(file, sep='\t', lineterminator='\n', header=None)
 
@@ -186,7 +186,7 @@ def main():
     ax.legend(targets)
     ax.grid()
     # plt.savefig('hierarchy_cho.eps')
-    plt.savefig('hierarchy_iyer.eps')
+    # plt.savefig('hierarchy_iyer.eps')
     plt.show()
 
 

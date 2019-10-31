@@ -57,8 +57,8 @@ def deg_cal(matrix):
 def main():
     # file = "iyer.txt"
     # file = "cho.txt"
-    file = "new_dataset_1.txt"
-    # file = sys.argv[1]
+    # file = "new_dataset_1.txt"
+    file = sys.argv[1]
 
 
     data = np.array(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 2:])
@@ -81,7 +81,7 @@ def main():
     #rand = 0.8044 jaccard = 0.4263
     #for iyer.txt sig = 3.6
     #rand = 0.8436 jaccard = 0.4172
-    sig = int(sys.argv[3])
+    sig = float(sys.argv[3])
 
     simatrix = sim_cal(data, sig)
     dgmatrix = deg_cal(simatrix)
@@ -99,15 +99,15 @@ def main():
     new_egvector = eg_vector[:,new_index]
     reduced_dim = new_egvector
 # Please input the initial kmeans points in the manner of num1,num2,num3
-    array_id = sys.argv[4]
-    array_id = array_id.split(',')
-    array_id = list(map(int,array_id))
-    print(array_id)
+#     array_id = sys.argv[4]
+#     array_id = array_id.split(',')
+#     array_id = list(map(int,array_id))
+#     print(array_id)
+#
+#     init_points = reduced_dim[array_id]
+#     km = KMeans(init = init_points, n_clusters = k)
 
-    init_points = reduced_dim[array_id]
-    km = KMeans(init = init_points, n_clusters = k)
-
-    # km = KMeans(init = 'k-means++', n_clusters = k)
+    km = KMeans(init = 'k-means++', n_clusters = k)
     km.fit(reduced_dim)
     km.labels_
     # print(km.labels_)
@@ -147,7 +147,7 @@ def main():
     bx.set_xlabel('Principal Component 1', fontsize=15)
     bx.set_ylabel('Principal Component 2', fontsize=15)
     # bx.set_title('Spectral Clustering Result on cho.txt', fontsize=20)
-    bx.set_title('Spectral Clustering Result on iyer.txt', fontsize=20)
+    bx.set_title('Spectral Clustering Result on cho.txt', fontsize=20)
 
     targets = [ i for i in range(1,int(k)+1)]
     colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
@@ -181,7 +181,7 @@ def main():
                    , s=50)
     ax.legend(targets)
     ax.grid()
-    # plt.savefig('spectral_cho.eps')
+    plt.savefig('spectral_cho.eps')
     # plt.savefig('spectral_iyer.eps')
     # plt.savefig('hierarchy_cho.eps')
     # plt.savefig('hierarchy_iyer.eps')

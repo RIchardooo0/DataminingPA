@@ -1,9 +1,11 @@
+from sklearn.cluster import KMeans
 import pandas as pd
 import numpy as np
-from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import random
 import sys
 import math
-import random 
+
 
 def incidence_mat_gen(label):
     matrix = [[0]*len(label) for i in range(len(label))]
@@ -132,11 +134,16 @@ new_means = np.array(u_list)
 new_covs = np.array(covs_list)
 b = pow(10,-9)
 time = 1
+print('Number of times:')
 print(time)
 print("==========================")
+print('Pi')
 print(new_pi)
+print('Means')
 print(new_means)
+print('Covariance')
 print(new_covs)
+print('r')
 print(r)
 while (np.linalg.norm(new_covs - old_covs) > b):
     old_pi = np.array(new_pi)
@@ -149,11 +156,16 @@ while (np.linalg.norm(new_covs - old_covs) > b):
     new_pi = np.array(pi_new)
     new_means = np.array(u_list)
     new_covs = np.array(covs_list)
+    print('Number of times:')
     print(time)
     print("==========================")
+    print('Pi')
     print(new_pi)
+    print('Means')
     print(new_means)
+    print('Covariance')
     print(new_covs)
+    print('r')
     print(r)
     if (time == 100):
         break
@@ -163,24 +175,65 @@ result = incidence_mat_gen(labels)
 
 rand1,jaccard = ja_rand_cal(truth, result)
 
-print("shoulu"+str(jaccard))
-print("shoulu"+str(rand1))
+print("Jaccard:\t"+str(jaccard))
+print("Rand:\t"+str(rand1))
+labels = np.array(labels)+1
+#plot
+file = 'GMM_tab_seperated.txt'
+df = pd.read_csv(file, sep='\t', lineterminator='\n', header=None)
 
-from sklearn.mixture import GaussianMixture
-data = np.loadtxt('GMM_tab_seperated.txt',delimiter='\t')
-# data = np.loadtxt('iyer.txt',delimiter='\t')
-# data = np.loadtxt('GMM.txt')
-df = pd.DataFrame(data[:,2:])
-gmm = GaussianMixture(n_components = K)
-gmm.fit(df)
-labels = gmm.predict(df)
-truth = incidence_mat_gen(label)
-result = incidence_mat_gen(labels)
+x = df.loc[:, 2:].values
 
-rand1,jaccard = ja_rand_cal(truth, result)
 
-print("diaobao"+str(jaccard))
-print("diaobao"+str(rand1))
+principalDF = pd.DataFrame(data=x, columns=['principal component 1', 'principal component 2'])
+groundtruth = pd.DataFrame(data=df.loc[:, 1].values, columns=['Label'])
+finalDf = pd.concat([principalDF, groundtruth], axis=1)
+
+#Hierarchy result
+my_resutl = pd.DataFrame(data = np.array(labels), columns = ['Label'])
+my_Df = pd.concat([principalDF, my_resutl ],axis = 1)
+
+fig = plt.figure(figsize=(16, 8))
+bx = fig.add_subplot(1, 2, 2)
+bx.set_xlabel('Principal Component 1', fontsize=15)
+bx.set_ylabel('Principal Component 2', fontsize=15)
+# bx.set_title('Hierarchical Clustering Result on Cho.txt', fontsize=20)
+bx.set_title('GMM Clustering Result on GMM_tab_seperated.txt', fontsize=20)
+
+targets = [ i for i in range(1,int(K)+1)]
+colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(K))]
+
+for target, color in zip(targets, colors):
+    indicesToKeep = my_Df['Label'] == target
+    bx.scatter(my_Df.loc[indicesToKeep, 'principal component 1']
+               , my_Df.loc[indicesToKeep, 'principal component 2']
+               , c=color
+               , s=50)
+bx.legend(targets)
+bx.grid()
+#Ground truth
+#####################################
+ax = fig.add_subplot(1, 2, 1)
+ax.set_xlabel('Principal Component 1', fontsize=15)
+ax.set_ylabel('Principal Component 2', fontsize=15)
+ax.set_title('Ground Truth', fontsize=20)
+
+
+targets = [ i for i in range(1,int(K)+1)]
+colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(K))]
+
+for target, color in zip(targets, colors):
+    indicesToKeep = finalDf['Label'] == target
+    ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
+               , finalDf.loc[indicesToKeep, 'principal component 2']
+               , c=color
+               , s=50)
+ax.legend(targets)
+ax.grid()
+# plt.savefig('hierarchy_cho.eps')
+# plt.savefig('hierarchy_iyer.eps')
+plt.show()
+
 
 
 

@@ -58,7 +58,7 @@ def gaussian(attributes, pi, means, covs, prob_matrix):
             dif = (attributes[row,:] - means[k])
             covdet = np.linalg.det(covs[k])
             covinv = np.linalg.pinv(covs[k])
-            prob = 1.0/((2*np.pi)*pow(covdet,0.5))*np.exp(-0.5*dif.dot(covinv).dot(dif.T))
+            prob = 1.0/(pow((2*np.pi)*covdet,0.5))*np.exp(-0.5*dif.dot(covinv).dot(dif.T))
             prob_matrix[row][k] = prob
     return prob_matrix
 
@@ -96,7 +96,7 @@ def m_step(pi, prob_matrix, attributes, r, means, covs):
 
 
 # data = np.loadtxt('new_dataset_1.txt',delimiter='\t')
-data = np.loadtxt('iyer.txt',delimiter='\t')
+data = np.loadtxt('cho.txt',delimiter='\t')
 label = data[:,1]
 clusters = set((data[:,1]))
 clusters.discard(-1)
@@ -129,7 +129,7 @@ result = incidence_mat_gen(labels)
 
 rand1,jaccard = ja_rand_cal(truth, result)
 
-print("shoulu"+str(rand1)+str(jaccard))
+print("Rand and Jaccard"+' '+str(rand1)+'     '+str(jaccard))
 
 #
 # from sklearn.mixture import GaussianMixture
@@ -206,7 +206,7 @@ for target, color in zip(targets, colors):
 ax.legend(targets)
 ax.grid()
 
-# plt.savefig('hierarchy_cho.eps')
+plt.savefig('GMM_cho.eps')
 # plt.savefig('hierarchy_iyer.eps')
 plt.show()
 

@@ -13,7 +13,7 @@ ground_truth = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None
 
 id = list(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, 0])
 
-# k = sys.argv[2]
+RealK = sys.argv[2]
 
 
 matrix = data
@@ -52,9 +52,17 @@ def incidence_mat_gen(label):
 # print(f_result)
 ##########this is x's neighbor
 ##############初始化###########
-redius = 0.17
-threshold = 10
+#for cho
+# redius = 1
+# threshold = 3
+
+#for iyer
+# redius = 1
+# threshold = 5
 ################
+redius = float(sys.argv[3])
+threshold = float(sys.argv[4])
+
 def locate_in_matrix(point,total_matrix):
     #print("######")
     located_point = []
@@ -151,7 +159,7 @@ k = len(set(clus_record))
 # print(k)
 #PCA implementation
 
-
+# print(clus_record)
 inci_truth = incidence_mat_gen(ground_truth)
 inci_hier = incidence_mat_gen(clus_record)
 
@@ -166,34 +174,38 @@ for i in clus_record:
     else:
         new_clus.append(i)
 
-print(new_clus)
+# print(new_clus)
 clus_record = np.array(new_clus)
+# print(clus_record)
 #######################################################################################################################
-X = data - data.mean(0)#归一化
+#PCA implementation
+df = pd.read_csv(file, sep='\t', lineterminator='\n', header=None)
+
+x = df.loc[:, 2:].values
+X = x - x.mean(0)
 # x = StandardScaler().fit_transform(x)
 # print(x)
-pca = PCA(n_components=2)#取两个component
+pca = PCA(n_components=2)
 principalComponents = pca.fit_transform(X)
 
 principalDF = pd.DataFrame(data=principalComponents, columns=['principal component 1', 'principal component 2'])
-groundtruth = pd.DataFrame(data=ground_truth, columns=['Label'])
-finalDf = pd.concat([principalDF, groundtruth], axis=1)#拼接ground truth 和pca
+groundtruth = pd.DataFrame(data=df.loc[:, 1].values, columns=['Label'])
+finalDf = pd.concat([principalDF, groundtruth], axis=1)
 
-#DBSCAN result
-my_resutl = pd.DataFrame(data = np.array(clus_record), columns = ['Label'])###########
+#Spectral result
+my_resutl = pd.DataFrame(data = np.array(clus_record), columns = ['Label'])
 my_Df = pd.concat([principalDF, my_resutl ],axis = 1)
 
 fig = plt.figure(figsize=(16, 8))
 bx = fig.add_subplot(1, 2, 2)
 bx.set_xlabel('Principal Component 1', fontsize=15)
 bx.set_ylabel('Principal Component 2', fontsize=15)
-bx.set_title('DBSCAN Result on cho.txt', fontsize=20)
-# bx.set_title('DBSCAN Result on iyer.txt', fontsize=20)
+# bx.set_title('Spectral Clustering Result on cho.txt', fontsize=20)
+bx.set_title('DBSCAN Result on iyer.txt', fontsize=20)
 
-targets = [ i for i in range(1,int(k)+1)]
+targets = [ i for i in range(1,int(k))]
 targets.append(-1)
-
-colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k)+1)]
+colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
 
 for target, color in zip(targets, colors):
     indicesToKeep = my_Df['Label'] == target
@@ -211,8 +223,10 @@ ax.set_ylabel('Principal Component 2', fontsize=15)
 ax.set_title('Ground Truth', fontsize=20)
 
 
-targets = [ i for i in range(1,int(k)+1)]
-colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
+
+
+targets = [ i for i in range(1,int(RealK)+1)]
+colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(RealK))]
 
 for target, color in zip(targets, colors):
     indicesToKeep = finalDf['Label'] == target
@@ -222,7 +236,8 @@ for target, color in zip(targets, colors):
                , s=50)
 ax.legend(targets)
 ax.grid()
-
-# plt.savefig('hierarchy_cho.eps')
-# plt.savefig('hierarchy_iyer.eps')
+# plt.savefig('spectral_cho.eps')
+# plt.savefig('spectral_iyer.eps')
+# plt.savefig('DBSCAN_cho.eps')
+plt.savefig('DBSCAN_iyer.eps')
 plt.show()

@@ -158,7 +158,7 @@ while (np.linalg.norm(new_covs - old_covs) > b):
     print(new_means)
     print(new_covs)
     print(r)
-    if (time == 10):
+    if (time == 6):
         break
 labels = [np.argmax(r[i]) for i in range(attributes.shape[0])]
 truth = incidence_mat_gen(label)
@@ -167,8 +167,8 @@ labels = np.array(labels)+1
 
 rand1,jaccard = ja_rand_cal(truth, result)
 
-print("shoulu"+str(jaccard))
-print("shoulu"+str(rand1))
+print("Jaccard"+str(jaccard))
+print("Rand"+str(rand1))
 
 
 #PCA implementation
@@ -199,7 +199,7 @@ bx = fig.add_subplot(1, 2, 2)
 bx.set_xlabel('Principal Component 1', fontsize=15)
 bx.set_ylabel('Principal Component 2', fontsize=15)
 # bx.set_title('Hierarchical Clustering Result on Cho.txt', fontsize=20)
-bx.set_title('Hierarchical Clustering Result on iyer.txt', fontsize=20)
+bx.set_title('GMM Clustering Result on iyer.txt', fontsize=20)
 
 targets = [ i for i in range(1,int(K)+1)]
 colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(K))]
@@ -232,25 +232,25 @@ for target, color in zip(targets, colors):
 ax.legend(targets)
 ax.grid()
 # plt.savefig('hierarchy_cho.eps')
-# plt.savefig('hierarchy_iyer.eps')
+# plt.savefig('GMM_iyer1.eps')
 plt.show()
 
-'''
-from sklearn.mixture import GaussianMixture
-# data = np.loadtxt('GMM_tab_seperated.txt',delimiter='\t')
-data = np.loadtxt('iyer.txt',delimiter='\t')
-# data = np.loadtxt('GMM.txt')
-df = pd.DataFrame(data[:,2:])
-gmm = GaussianMixture(n_components = K)
-gmm.fit(df)
-labels = gmm.predict(df)
-truth = incidence_mat_gen(label)
-result = incidence_mat_gen(labels)
+#
+# from sklearn.mixture import GaussianMixture
+# # data = np.loadtxt('GMM_tab_seperated.txt',delimiter='\t')
+# data = np.loadtxt('iyer.txt',delimiter='\t')
+# # data = np.loadtxt('GMM.txt')
+# df = pd.DataFrame(data[:,2:])
+# gmm = GaussianMixture(n_components = K)
+# gmm.fit(df)
+# labels = gmm.predict(df)
+# truth = incidence_mat_gen(label)
+# result = incidence_mat_gen(labels)
+#
+# rand1,jaccard = ja_rand_cal(truth, result)
+#
+# print("diaobao"+str(jaccard))
+# print("diaobao"+str(rand1))
 
-rand1,jaccard = ja_rand_cal(truth, result)
-
-print("diaobao"+str(jaccard))
-print("diaobao"+str(rand1))
-'''
 
 

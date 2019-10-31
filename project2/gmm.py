@@ -96,7 +96,7 @@ def m_step(pi, prob_matrix, attributes, r, means, covs):
 
 
 # data = np.loadtxt('new_dataset_1.txt',delimiter='\t')
-data = np.loadtxt('cho.txt',delimiter='\t')
+data = np.loadtxt('iyer.txt',delimiter='\t')
 label = data[:,1]
 clusters = set((data[:,1]))
 clusters.discard(-1)
@@ -129,7 +129,7 @@ result = incidence_mat_gen(labels)
 
 rand1,jaccard = ja_rand_cal(truth, result)
 
-print("shoulu"+str(jaccard))
+print("shoulu"+str(rand1)+str(jaccard))
 
 #
 # from sklearn.mixture import GaussianMixture

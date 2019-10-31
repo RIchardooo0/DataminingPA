@@ -158,7 +158,7 @@ while (np.linalg.norm(new_covs - old_covs) > b):
     print(new_means)
     print(new_covs)
     print(r)
-    if (time == 10):
+    if (time == 2):
         break
 labels = [np.argmax(r[i]) for i in range(attributes.shape[0])]
 truth = incidence_mat_gen(label)

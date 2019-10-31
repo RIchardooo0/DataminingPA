@@ -129,7 +129,7 @@ result = incidence_mat_gen(labels)
 
 rand1,jaccard = ja_rand_cal(truth, result)
 
-print("Rand and Jaccard"+str(rand1)+str(jaccard))
+print("Rand and Jaccard"+' '+str(rand1)+'     '+str(jaccard))
 
 #
 # from sklearn.mixture import GaussianMixture
@@ -206,7 +206,7 @@ for target, color in zip(targets, colors):
 ax.legend(targets)
 ax.grid()
 
-# plt.savefig('hierarchy_cho.eps')
+plt.savefig('GMM_cho.eps')
 # plt.savefig('hierarchy_iyer.eps')
 plt.show()
 

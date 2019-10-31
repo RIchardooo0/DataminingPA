@@ -9,7 +9,8 @@ import sys
 from sklearn.cluster import SpectralClustering, KMeans
 
 ###########################################################
-data = np.loadtxt('iyer.txt',delimiter='\t')
+file = sys.argv[1]
+data = np.loadtxt(file,delimiter='\t')
 #data = np.loadtxt('iyer.txt',delimiter='\t')
 #df = pd.DataFrame(data)
 # print(data)
@@ -59,7 +60,8 @@ rand_forcal = rand.T.flatten()
 
 # print(rand_forcal)
 center = []
-cluster_num =10
+
+cluster_num =int(sys.argv[2])
 
 for i in range(cluster_num):
     rand = np.random.rand(num_of_vector, 1)
@@ -70,11 +72,10 @@ for i in range(cluster_num):
 
 
 #file = 'new_dataset_1.txt'
-file = 'iyer.txt'
 ###############################################################################
 ###############################################################################
 # cluster_num = 3 #the cluster number
-cluster_num = 10
+# cluster_num = 10
 # cluster_num = 10#for iyer
 ################################################################################
 ################################################################################
@@ -229,7 +230,7 @@ fig = plt.figure(figsize=(16, 8))
 bx = fig.add_subplot(1, 2, 2)
 bx.set_xlabel('Principal Component 1', fontsize=15)
 bx.set_ylabel('Principal Component 2', fontsize=15)
-bx.set_title('DBSCAN Result on cho.txt', fontsize=20)
+bx.set_title('Kmeans Result on '+file, fontsize=20)
 # bx.set_title('DBSCAN Result on iyer.txt', fontsize=20)
 
 targets = [ i for i in range(1,cluster_num+1)]
@@ -263,8 +264,8 @@ for target, color in zip(targets, colors):
 ax.legend(targets)
 ax.grid()
 
-# plt.savefig('hierarchy_cho.eps')
-# plt.savefig('hierarchy_iyer.eps')
+# plt.savefig('Kmeans_iyer.eps')
+# plt.savefig('Kmeans_cho.eps')
 plt.show()
 #print(belongto_which_cluster_list)
 #print(final)

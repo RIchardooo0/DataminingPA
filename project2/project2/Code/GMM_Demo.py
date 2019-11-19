@@ -38,23 +38,23 @@ def ja_rand_cal(truth, result):
 def gmm_init(attributes, K):
     col = attributes.shape[1]
     pi = np.ones(K) / K
-#     pi = [0.5, 0.5]
-    kmean = KMeans(n_clusters=K)
-    kmean.fit(attributes);
-
-    means = kmean.cluster_centers_
+    pi = [0.1, 0.8, 0.1]
+#     kmean = KMeans(n_clusters=K)
+#     kmean.fit(attributes);
+#
+#     means = kmean.cluster_centers_
     
-#     means = np.array([[0,0],[1,1]])
+    means = np.array([[1,1],[3.5,5.3],[0,4]])
     covs = []
-    for i in range(K):
-        cov = np.eye(col)/2000
-        covs.append(cov)
-#     cov1 = np.array([[2,1],[1,1]])
-#     cov2 = np.array([[3,2],[2,2]])
-#     cov3 = np.array([[4,3],[2,2]])
-#     covs.append(cov1)
-#     covs.append(cov2)
-#     covs.append(cov3)
+    # for i in range(K):
+    #     cov = np.eye(col)/2000
+    #     covs.append(cov)
+    cov1 = np.array([[1,0.5],[0.5,1]])
+    cov2 = np.array([[1,0],[0,2]])
+    cov3 = np.array([[0.5,0],[0,0.1]])
+    covs.append(cov1)
+    covs.append(cov2)
+    covs.append(cov3)
 #     for i in range(K):
 #             cov = np.random.rand(col,col)
 #             covs.append(cov)

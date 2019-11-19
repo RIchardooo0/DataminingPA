@@ -98,16 +98,17 @@ def main():
     new_index = sorted_indices[0:k]
     new_egvector = eg_vector[:,new_index]
     reduced_dim = new_egvector
-# Please input the initial kmeans points in the manner of num1,num2,num3
-#     array_id = sys.argv[4]
-#     array_id = array_id.split(',')
-#     array_id = list(map(int,array_id))
-#     print(array_id)
-#
-#     init_points = reduced_dim[array_id]
-#     km = KMeans(init = init_points, n_clusters = k)
 
-    km = KMeans(init = 'k-means++', n_clusters = k)
+# Please input the initial kmeans points in the manner of num1,num2,num3
+    array_id = sys.argv[4]
+    array_id = array_id.split(',')
+    array_id = list(map(int,array_id))
+    print(array_id)
+
+    init_points = reduced_dim[array_id]
+    km = KMeans(init = init_points, n_clusters = k)
+
+    # km = KMeans(init = 'k-means++', n_clusters = k)
     km.fit(reduced_dim)
     km.labels_
     # print(km.labels_)
@@ -181,7 +182,7 @@ def main():
                    , s=50)
     ax.legend(targets)
     ax.grid()
-    plt.savefig('spectral_cho.eps')
+    # plt.savefig('spectral_cho.eps')
     # plt.savefig('spectral_iyer.eps')
     # plt.savefig('hierarchy_cho.eps')
     # plt.savefig('hierarchy_iyer.eps')

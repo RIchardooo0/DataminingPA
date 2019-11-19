@@ -201,11 +201,11 @@ bx = fig.add_subplot(1, 2, 2)
 bx.set_xlabel('Principal Component 1', fontsize=15)
 bx.set_ylabel('Principal Component 2', fontsize=15)
 # bx.set_title('Spectral Clustering Result on cho.txt', fontsize=20)
-bx.set_title('DBSCAN Result on iyer.txt', fontsize=20)
+bx.set_title('DBSCAN Result', fontsize=20)
 
-targets = [ i for i in range(1,int(k))]
+targets = [ i for i in range(1,int(k)+1)]
 targets.append(-1)
-colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k))]
+colors = ['#' +''.join([random.choice('0123456789ABCDEF') for x in range(6)]) for i in range(int(k)+1)]
 
 for target, color in zip(targets, colors):
     indicesToKeep = my_Df['Label'] == target
@@ -239,5 +239,5 @@ ax.grid()
 # plt.savefig('spectral_cho.eps')
 # plt.savefig('spectral_iyer.eps')
 # plt.savefig('DBSCAN_cho.eps')
-plt.savefig('DBSCAN_iyer.eps')
+# plt.savefig('DBSCAN_iyer.eps')
 plt.show()

@@ -32,19 +32,31 @@ def accu_cal(truth, result):
     fp = sum([1 for i in plus if i == -1])
     fn = sum([1 for i in plus if i == 1])
     tn = total - tp - fp - fn
+
+    # print(tp, fp, fn, tn)
     acc = (tp+tn)/total
-    pre = tp/(tp + fp)
-    recall = tp/(tp + fn)
-    fm = 2*tp/(2*tp + fn + fp)
+
+    if tp + fp != 0:
+        pre = tp / (tp + fp)
+    else:
+        pre = 0
+    if tp + fn != 0:
+        recall = tp / (tp + fn)
+    else:
+        recall = 0
+    if 2 * tp + fn + fp != 0:
+        fm = 2 * tp / (2 * tp + fn + fp)
+    else:
+        fm = 0
     return acc,pre,recall,fm
 
 
 
 
 def main():
-    file = "project3_dataset1.txt"
-    # file = "project3_dataset2.txt"
-
+    # file = "project3_dataset1.txt"
+    file = "project3_dataset2.txt"
+    # file = "project3_dataset4.txt"
     # file = sys.argv[1]
 
     k = 3
@@ -57,37 +69,39 @@ def main():
     copy_data = data
     flag = 0
     str_attr = []
+    category = []
     for i in range(colnum):
         if type(data[0][i]) == str:
             flag = 1
             str_attr.append(i)
             category1 = pd.Categorical(data[:,i]).categories
+            category.append(category1)
     if flag == 1:
-        cat_num = len(category1)
-        cat_mapping = {}
-        index = [0 for i in range(cat_num-1)]
-        index.append(1/np.sqrt(cat_num))
-        for i in category1:
-            cat_mapping[i] = index
-            index = copy.deepcopy(index)
-            index.pop(0)
-            index.append(0)
         copy_data = copy.deepcopy(data)
-        for i in str_attr:
-            new = pd.Series(data[:,i]).map(cat_mapping).values
+        for num in range(len(category)):
+            cat_num = len(category[num])
+            cat_mapping = {}
+            index = [0 for i in range(cat_num-1)]
+            index.append(1/np.sqrt(cat_num))
+            for i in category[num]:
+                cat_mapping[i] = index
+                index = copy.deepcopy(index)
+                index.pop(0)
+                index.append(0)
+            new = pd.Series(data[:,str_attr[num]]).map(cat_mapping).values
             for j in range(len(copy_data)):
-                copy_data[j][i] = np.array(new[j])
-
-
+                copy_data[j][str_attr[num]] = np.array(new[j])
     checklen = round(rownum/10)
     normed_data = np.hstack((norm_data(copy_data),ground_truth))
 
+    acc_list = []
+    pre_list = []
+    recall_list = []
+    fm_list = []
+
     for i in range(10):
-        acc_list = []
-        pre_list = []
-        recall_list = []
-        fm_list = []
-        if (i+1)*checklen > rownum:
+
+        if i == 9:
             testdata = normed_data[i*checklen:,:]
             traindata = normed_data[:i*checklen,:]
         else:
@@ -111,11 +125,14 @@ def main():
                 classified_test.append(1)
             else:
                 classified_test.append(0)
+
         acc,pre,recall,fm = accu_cal(label_test, classified_test)
         acc_list.append(acc)
         pre_list.append(pre)
         recall_list.append(recall)
         fm_list.append(fm)
+
+    print(acc_list, pre_list, recall_list, fm_list)
 
     tru_acc = np.mean(acc_list)
     tru_pre = np.mean(pre_list)

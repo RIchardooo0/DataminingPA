@@ -12,7 +12,6 @@ def preprocess(data):
             data_str = data_str.drop([i],axis=1)
     data_str = pd.concat([data_str,data.iloc[:,-1]],axis= 1,ignore_index= True)
     return data_str, data_val
-    
 def split_data(data):
     interval = int(data.shape[0]/10)
     acc_list = []
@@ -49,10 +48,14 @@ def naive_bayes(data, test_data, train_data):
         means = []
         variances = []
         res = []
-        nums = []
+        nums1 = []
+        nums2 = []
         for label in labels:
             train_data_label = train_data.loc[train_data.iloc[:,-1] == label,:]
-            nums.append(train_data_label.shape[0])
+            if (label == 0):
+                nums1.append(train_data_label.shape[0])
+            elif (label == 1):
+                nums2.append(train_data_label.shape[0])
             mean = train_data_label.iloc[:,:-1].mean()
             variance = np.sum((train_data_label.iloc[:,:-1]- mean)**2)/(train_data_label.shape[0])
             means.append(mean)
@@ -64,10 +67,10 @@ def naive_bayes(data, test_data, train_data):
             probability = 1
             prob = np.exp(-1*(temp)**2/(variances*2))/np.sqrt(2*np.pi*variances)
             for j in range(test_data.shape[1] - 1):
-                probability = probability*prob[j]
-            probability[0] = probability[0]*(nums[0]/train_data.shape[0])
-            probability[1] = probability[1]*(nums[1]/train_data.shape[0])
-            pre = np.argmax(probability.values)
+                probability = probability*prob.iloc[:,j]
+            probability[0] = probability[0]*(nums1[0]/train_data.shape[0])
+            probability[1] = probability[1]*(nums2[0]/train_data.shape[0])
+            pre = np.argmax(probability)
             res.append(pre)
     elif train_data_val.shape[1] == 1:
         labels = data.iloc[:,-1].value_counts().index
@@ -153,6 +156,7 @@ def accu_cal(truth, result):
     fn = sum([1 for i in plus if i == 1])
     tn = total - tp - fp - fn
 
+    # print(tp, fp, fn, tn)
     acc = (tp+tn)/total
 
     if tp + fp != 0:
@@ -168,5 +172,5 @@ def accu_cal(truth, result):
     else:
         fm = 0
     return acc,pre,recall,fm
-data = pd.read_csv('project3_dataset1.txt', sep='\t', header = None)
+data = pd.read_csv('project3_dataset3.txt', sep='\t', header = None)
 split_data(data)

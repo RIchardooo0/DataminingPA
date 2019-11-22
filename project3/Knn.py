@@ -55,11 +55,11 @@ def accu_cal(truth, result):
 
 def main():
     # file = "project3_dataset1.txt"
-    file = "project3_dataset2.txt"
-    # file = "project3_dataset4.txt"
+    # file = "project3_dataset2.txt"
+    file = "project3_dataset4.txt"
     # file = sys.argv[1]
 
-    k = 3
+    k = 2
 
     data = np.array(pd.read_csv(file, sep='\t', lineterminator='\n', header=None).iloc[:, :-1])
     rownum = len(data)
@@ -75,6 +75,7 @@ def main():
             flag = 1
             str_attr.append(i)
             category1 = pd.Categorical(data[:,i]).categories
+            print(category1)
             category.append(category1)
     if flag == 1:
         copy_data = copy.deepcopy(data)

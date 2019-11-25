@@ -28,24 +28,33 @@ def predict(test, alpha_list, bestN, X_train,Y_train):
             model = KNeighborsClassifier(n_neighbors=bestN[i], weights='distance')
             model.fit(X_train, Y_train)
             item = item.reshape(1,-1)
-            pre_result = np.array(model.predict(item)[0])*alpha_list[i]
-            result =+  pre_result
-
-        predict_result.append(result)
+            if int(model.predict(item)[0]) == 0:
+                temp = -1
+            else:
+                temp = 1
+            pre_result = temp*alpha_list[i]
+            result += pre_result
+        if result>0:
+            res = 1
+        else:
+            res = 0
+        predict_result.append(res)
     return predict_result
 
 def main():
     file1 = "train_features.csv"
     file2 = "train_label.csv"
-    test = np.array(pd.read_csv(file1, sep=',', lineterminator='\n', header=None).iloc[4:9,1:])
+    testfile = "test_features.csv"
+    test = np.array(pd.read_csv(testfile, sep=',', lineterminator='\n', header=None).iloc[:,1:])
     data = np.array(pd.read_csv(file1, sep=',', lineterminator='\n', header=None).iloc[:,1:])
-    id = np.array(pd.read_csv(file1, sep=',', lineterminator='\n', header=None).iloc[:,0])
+    # id = np.array(pd.read_csv(file1, sep=',', lineterminator='\n', header=None).iloc[:,0])
     ground_truth = np.array(pd.read_csv(file2, sep=',', lineterminator='\n', header=None).iloc[1:,1])
     X_train, X_test, Y_train, Y_test = train_test_split(data,ground_truth, test_size=0.2, random_state=22)
-
     #initialize the weight of training test
     m = len(X_test)
     weights = np.array([1/m for i in range(m)])
+    Y_test = np.array(list(map(int, Y_test)))
+
     T = 20
     best_neighbour = [] # record the parameter for weak classifier
     alpha_list = []
@@ -53,10 +62,11 @@ def main():
     for i in range(T):
         #find the best n_neighbors to seperate the data with least error
         errormin = 99999
-        for i in range(1,100):
+        for i in range(1,50):
             model1 = KNeighborsClassifier(n_neighbors=i, weights = 'distance')
             model1.fit(X_train, Y_train)
             result = model1.predict(X_test)
+            result = np.array(list(map(int,result)))
             new = result + Y_test
             e_row = np.array([1 if item == 1 else 0 for item in new])
             error = np.sum(e_row*weights)
@@ -64,15 +74,26 @@ def main():
                 errormin = error
                 index = i
                 final = result
-        if errormin> 0.5: break
+        # print(errormin)
+        # print("********************")
+        # if errormin> 0.5: continue
 
-        alpha = 0.5*(np.exp((1-errormin)/errormin))
+        alpha = 0.5*(np.log((1-errormin)/errormin))
         best_neighbour.append(index)
         alpha_list.append(alpha)
         weights = weight_update(alpha, Y_test, final, weights)
-    print(best_neighbour,alpha_list)
+
+
+
+    # print(best_neighbour,alpha_list)
     final_result = predict(test,alpha_list,best_neighbour, X_train, Y_train)
+
+    res = pd.DataFrame(columns=["id","label"])
+    res["label"] = final_result
+    res["id"] = np.array([418 + i for i in range(len(final_result))])
+    print(res)
     print(final_result)
+    res.to_csv("result.csv",index = False)
 
 
 

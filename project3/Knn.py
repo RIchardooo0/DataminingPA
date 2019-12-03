@@ -54,9 +54,9 @@ def accu_cal(truth, result):
 
 
 def main():
-    # file = "project3_dataset1.txt"
+    file = "project3_dataset1.txt"
     # file = "project3_dataset2.txt"
-    file = "project3_dataset4.txt"
+    # file = "project3_dataset4.txt"
     # file = sys.argv[1]
 
     k = 2

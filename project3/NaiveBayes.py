@@ -33,13 +33,12 @@ def split_data(data):
         pre_list.append(pre)
         recall_list.append(recall)
         fm_list.append(fm)
-    print(acc_list, pre_list, recall_list, fm_list)
+#     print(acc_list, pre_list, recall_list, fm_list)
     tru_acc = np.mean(acc_list)
     tru_pre = np.mean(pre_list)
     tru_recall = np.mean(recall_list)
     tru_fm = np.mean(fm_list)
     print(tru_acc,tru_pre,tru_recall,tru_fm)
-    return 
 def naive_bayes(data, test_data, train_data):
     train_data_str, train_data_val = preprocess(train_data)
     test_data_str, test_data_val = preprocess(test_data)
@@ -86,13 +85,15 @@ def naive_bayes(data, test_data, train_data):
                         number = count[test_data.iloc[i,j]]
                         probability = probability*(number/train_data_label.shape[0])
                     except:
-                        probability = 0
-                        pass       
-                probability = probability*(train_data_label.shape[0]/train_data.shape[0])      
+                        print("zero probability")
+                        probability = 1/train_data_label.shape[0]
+                probability = probability*(train_data_label.shape[0]/train_data.shape[0])
                 if label == 0:
                     pros[0] = probability
                 elif label == 1:
                     pros[1] = probability
+            print("p(X|H0)p(H0) = " + str(pros[0]))
+            print("p(X|H1)p(H1) = " + str(pros[1]))
             pre = np.argmax(pros)
             pros.clear()
             pros = [None]*2
@@ -136,7 +137,8 @@ def naive_bayes(data, test_data, train_data):
                         number = count[test_data_str.iloc[i,j]]
                         pro = pro*(number/train_data_label_str.shape[0])
                     except:
-                        pro = 0
+                        print("zero probability")
+                        pro = 1/train_data_label_str.shape[0]
                 pro = pro*(train_data_label_str.shape[0]/train_data_str.shape[0])
                 if label == 0:
                     pro3.append(pro)
@@ -172,5 +174,6 @@ def accu_cal(truth, result):
     else:
         fm = 0
     return acc,pre,recall,fm
-data = pd.read_csv('project3_dataset3.txt', sep='\t', header = None)
+
+data = pd.read_csv('project3_dataset1.txt', sep='\t', header = None)
 split_data(data)
